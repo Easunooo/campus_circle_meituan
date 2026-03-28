@@ -1,0 +1,5 @@
+{
+  "name": "CampusCircle - 大学社团匹配",
+  "description": "一款基于兴趣匹配的大学社团发现与申请小程序，采用 iOS 风格设计，支持滑动匹配、意向清单管理及申请进度追踪。",
+  "requestFramePermissions": []
+}
