@@ -43,7 +43,7 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-          className="absolute inset-0 z-[100] flex flex-col bg-white/85 backdrop-blur-[40px]"
+          className="absolute inset-y-0 -left-[1px] -right-[1px] z-[100] flex flex-col bg-white/85 backdrop-blur-[40px]"
         >
           <header className="px-8 pt-12 pb-3 flex items-center gap-1.5">
             <button 

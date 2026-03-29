@@ -40,6 +40,20 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
     return () => container?.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Preload images for upcoming clubs to prevent white flashes
+  useEffect(() => {
+    const preloadImages = [clubs[currentIndex + 1], clubs[currentIndex + 2]]
+      .filter(Boolean)
+      .map(club => club?.coverImage);
+    
+    preloadImages.forEach(url => {
+      if (url) {
+        const img = new Image();
+        img.src = url;
+      }
+    });
+  }, [currentIndex, clubs]);
+
   useEffect(() => {
     const container = document.getElementById('discovery-scroll-container');
     if (container) {
@@ -49,12 +63,22 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
 
   const commitSwipe = (direction: 'left' | 'right') => {
     const upcomingClub = nextClub;
-    x.set(0);
-
+    
+    // We don't reset x immediately to avoid the 'snap back' flash of the old card.
+    // By keeping x at +/-600, the new card will also start off-screen initially,
+    // allowing the background card (which is already centered) to bridge the gap.
+    
     flushSync(() => {
+      // Reset x and stop any ongoing animations immediately for the NEW card.
+      // Doing this inside flushSync ensures the new card (which will mount with a new key)
+      // is rendered at its neutral position (0) in the very first frame.
+      x.stop();
+      x.set(0);
+
       setFrozenNextClub(upcomingClub);
       setSwipeDirection(null);
 
+      // Update index/state
       if (direction === 'right') {
         onSwipeRight(currentClub);
       } else {
@@ -62,14 +86,16 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
         setCurrentIndex(prev => prev + 1);
       }
     });
+  };
 
-    window.requestAnimationFrame(() => {
-      setFrozenNextClub(null);
-    });
+  const handleDragStart = () => {
+    // When the user starts dragging the current card, we finally release 
+    // the 'frozen' background card so it can show the true next club behind it.
+    setFrozenNextClub(null);
   };
 
   const handleDragEnd = async (_: any, info: any) => {
-    // If we've swiped past the threshold, animate fully off-screen
+    // Check horizontal swipe
     if (info.offset.x > 100) {
       setSwipeDirection('right');
       await animate(x, 600, { duration: 0.35, ease: 'easeOut' });
@@ -79,12 +105,26 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
       await animate(x, -600, { duration: 0.35, ease: 'easeOut' });
       commitSwipe('left');
     } else {
-      // Otherwise, spring back to center
+      // Check vertical intent for snapping if the user dragged significantly vertically
+      if (Math.abs(info.offset.y) > 40 && Math.abs(info.offset.y) > Math.abs(info.offset.x)) {
+        const container = document.getElementById('discovery-scroll-container');
+        if (container) {
+          if (info.offset.y < -40) { // Swipe up on card
+             container.scrollTo({ top: container.clientHeight, behavior: 'smooth' });
+          } else if (info.offset.y > 40 && container.scrollTop > 10) { // Swipe down on details/card
+             container.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
+      }
+      
+      // Spring back horizontally
       animate(x, 0, { type: 'spring', stiffness: 400, damping: 30 });
     }
   };
 
   const swipe = async (direction: 'left' | 'right') => {
+    // Clear frozen state before starting a programmatic swipe
+    setFrozenNextClub(null);
     setSwipeDirection(direction);
     // Use a slightly larger value to ensure it flies off screen
     const targetX = direction === 'right' ? 600 : -600;
@@ -108,22 +148,18 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
       
       <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 to-transparent z-10" />
 
-      {isTop && (
-        <>
-          <motion.div 
-            style={{ opacity: likeOpacity }}
-            className="absolute top-24 left-10 border-4 border-emerald-500 text-emerald-500 font-headline font-black text-2xl px-4 py-2 rounded-xl rotate-[-15deg] uppercase z-20"
-          >
-            感兴趣
-          </motion.div>
-          <motion.div 
-            style={{ opacity: nopeOpacity }}
-            className="absolute top-24 right-10 border-4 border-rose-500 text-rose-500 font-headline font-black text-2xl px-4 py-2 rounded-xl rotate-[15deg] uppercase z-20"
-          >
-            跳过
-          </motion.div>
-        </>
-      )}
+      <motion.div 
+        style={{ opacity: isTop ? likeOpacity : 0 }}
+        className="absolute top-24 left-10 border-4 border-emerald-500 text-emerald-500 font-headline font-black text-2xl px-4 py-2 rounded-xl rotate-[-15deg] uppercase z-20 pointer-events-none"
+      >
+        感兴趣
+      </motion.div>
+      <motion.div 
+        style={{ opacity: isTop ? nopeOpacity : 0 }}
+        className="absolute top-24 right-10 border-4 border-rose-500 text-rose-500 font-headline font-black text-2xl px-4 py-2 rounded-xl rotate-[15deg] uppercase z-20 pointer-events-none"
+      >
+        跳过
+      </motion.div>
 
       <div 
         className="absolute inset-0 z-10 pointer-events-none bg-white/10"
@@ -200,10 +236,10 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
         </button>
       </div>
 
-      <div id="discovery-scroll-container" className="h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar snap-y snap-proximity relative scroll-smooth">
+      <div id="discovery-scroll-container" className="h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar snap-y snap-mandatory relative scroll-smooth overscroll-contain">
         {/* Page 1: The Swiper View */}
-        <div className="h-full w-full flex-shrink-0 flex flex-col relative snap-start px-4 pt-4 pb-28">
-          <div className="flex-1 relative mt-[env(safe-area-inset-top)]">
+        <div className="h-full w-full flex-shrink-0 flex flex-col relative snap-start snap-always px-4 pt-4 pb-28">
+          <div className="flex-1 relative mt-[env(safe-area-inset-top)] mb-6">
             {/* Background Card (Next) */}
             {previewClub && (
               <div className="absolute inset-x-0 bottom-0 top-0 z-0 origin-bottom pointer-events-none">
@@ -218,9 +254,10 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
               animate={{ opacity: 1, scale: 1 }}
               drag="x"
               dragDirectionLock
-              dragPropagation={false}
+              dragPropagation={true}
               dragConstraints={{ left: 0, right: 0 }}
               dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+              onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
               className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing will-change-[transform,rotate]"
             >
@@ -240,7 +277,7 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
               // Scroll to the next snap point
               const container = document.getElementById('discovery-scroll-container');
               if (container) {
-                container.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+                container.scrollTo({ top: container.clientHeight, behavior: 'smooth' });
               }
             }}
             className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors pointer-events-auto shadow-md"
@@ -258,7 +295,7 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
       </div>
 
       {/* Page 2: Detail Card View */}
-      <div className="min-h-full w-full flex-shrink-0 flex flex-col snap-start px-4 pt-4 pb-48">
+      <div className="min-h-full w-full flex-shrink-0 flex flex-col snap-start snap-always px-4 pt-4 pb-48">
         <div className="flex-1 w-full bg-white rounded-[1.75rem] shadow-xl relative z-20 px-8 pt-10 pb-4 flex flex-col mt-[env(safe-area-inset-top)]">
           
           <div className="mb-3">

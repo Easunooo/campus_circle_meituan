@@ -20,7 +20,7 @@ export const ClubDetail: React.FC<Props> = ({ club, onClose, onLike, onSubmit, i
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 z-[200] bg-surface/80 backdrop-blur-md flex flex-col pt-0 pb-0 overflow-hidden"
+        className="absolute inset-y-0 -left-[1px] -right-[1px] z-[200] bg-surface/80 backdrop-blur-md flex flex-col pt-0 pb-0 overflow-hidden"
       >
         <button 
           onClick={onClose}
