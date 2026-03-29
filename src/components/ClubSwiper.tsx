@@ -98,7 +98,7 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
   };
 
   const renderCardContent = (club: Club, isTop: boolean = false) => (
-    <div className="h-full w-full bg-surface rounded-[1.75rem] shadow-sm overflow-hidden relative isolate select-none">
+    <div className="h-full w-full bg-surface sm:rounded-[1.75rem] shadow-sm overflow-hidden relative isolate select-none">
       <img 
         src={club.coverImage} 
         alt={club.name}
@@ -202,7 +202,7 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
 
       <div id="discovery-scroll-container" className="h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar snap-y snap-proximity relative scroll-smooth">
         {/* Page 1: The Swiper View */}
-        <div className="h-full w-full flex-shrink-0 flex flex-col relative snap-start px-4 pt-4 pb-28">
+        <div className="h-full w-full flex-shrink-0 flex flex-col relative snap-start sm:px-4 sm:pt-4 pb-28">
           <div className="flex-1 relative mt-[env(safe-area-inset-top)]">
             {/* Background Card (Next) */}
             {previewClub && (
@@ -258,8 +258,8 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
       </div>
 
       {/* Page 2: Detail Card View */}
-      <div className="min-h-full w-full flex-shrink-0 flex flex-col snap-start px-4 pt-4 pb-48">
-        <div className="flex-1 w-full bg-white rounded-[1.75rem] shadow-xl relative z-20 px-8 pt-10 pb-4 flex flex-col mt-[env(safe-area-inset-top)]">
+      <div className="min-h-full w-full flex-shrink-0 flex flex-col snap-start sm:px-4 sm:pt-4 pb-48">
+        <div className="flex-1 w-full bg-white sm:rounded-[1.75rem] shadow-xl relative z-20 px-8 pt-10 pb-4 flex flex-col mt-[env(safe-area-inset-top)]">
           
           <div className="mb-3">
             <h2 className="text-3xl font-headline font-black text-on-surface mb-2 tracking-tight">{currentClub.name}</h2>

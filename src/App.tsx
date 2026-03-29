@@ -98,7 +98,7 @@ export default function App() {
   return (
     <div className="w-full h-[100dvh] min-h-[100svh] overflow-hidden">
       <div className="w-full h-full flex justify-center overflow-hidden">
-      <div className="app-frame w-full max-w-md mx-auto h-[100dvh] min-h-[100svh] bg-surface flex flex-col relative overflow-hidden sm:shadow-xl">
+      <div className="app-frame w-full sm:max-w-md mx-auto sm:my-4 h-[100dvh] min-h-[100svh] sm:h-[calc(100dvh-2rem)] sm:min-h-0 bg-surface flex flex-col relative overflow-hidden sm:rounded-[3rem] sm:shadow-2xl border-x-0 sm:border-x border-gray-100">
       <div className="flex-1 min-h-0 relative">
       <AnimatePresence mode="wait">
         {currentTab === 'interests' && (
