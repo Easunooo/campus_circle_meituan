@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'motion/react';
+import { motion, useMotionValue, useTransform, animate } from 'motion/react';
 import { useEffect } from 'react';
+import { flushSync } from 'react-dom';
 import { Club } from '../constants';
 import { cn } from '../lib/utils';
 import { Heart, X, Info, Search, Settings, Clock, Users, Star } from 'lucide-react';
@@ -16,6 +17,7 @@ interface Props {
 export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, onSearch, onSettings }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const [frozenNextClub, setFrozenNextClub] = useState<Club | null>(null);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
   const opacity = useTransform(x, [-200, -150, 0, 150, 200], [0, 1, 1, 1, 0]);
@@ -23,6 +25,8 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
   const nopeOpacity = useTransform(x, [-150, -50], [1, 0]);
 
   const currentClub = clubs[currentIndex];
+  const nextClub = clubs[currentIndex + 1] ?? null;
+  const previewClub = frozenNextClub ?? nextClub;
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -43,21 +47,37 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
     }
   }, [currentClub?.id]);
 
+  const commitSwipe = (direction: 'left' | 'right') => {
+    const upcomingClub = nextClub;
+    x.set(0);
+
+    flushSync(() => {
+      setFrozenNextClub(upcomingClub);
+      setSwipeDirection(null);
+
+      if (direction === 'right') {
+        onSwipeRight(currentClub);
+      } else {
+        onSwipeLeft(currentClub);
+        setCurrentIndex(prev => prev + 1);
+      }
+    });
+
+    window.requestAnimationFrame(() => {
+      setFrozenNextClub(null);
+    });
+  };
+
   const handleDragEnd = async (_: any, info: any) => {
     // If we've swiped past the threshold, animate fully off-screen
     if (info.offset.x > 100) {
       setSwipeDirection('right');
       await animate(x, 600, { duration: 0.35, ease: 'easeOut' });
-      onSwipeRight(currentClub);
-      // Don't increment index because onSwipeRight removes it from the parent list,
-      // which shifts the next item to the current index.
-      x.set(0);
+      commitSwipe('right');
     } else if (info.offset.x < -100) {
       setSwipeDirection('left');
       await animate(x, -600, { duration: 0.35, ease: 'easeOut' });
-      onSwipeLeft(currentClub);
-      setCurrentIndex(prev => prev + 1);
-      x.set(0);
+      commitSwipe('left');
     } else {
       // Otherwise, spring back to center
       animate(x, 0, { type: 'spring', stiffness: 400, damping: 30 });
@@ -74,16 +94,7 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
       ease: [0.32, 0.72, 0, 1] 
     });
 
-    if (direction === 'right') {
-      onSwipeRight(currentClub);
-      // Right swipe removes the item from the list, so we don't increment
-    } else {
-      onSwipeLeft(currentClub);
-      setCurrentIndex(prev => prev + 1);
-    }
-    
-    // Reset x to 0 for next card immediately
-    x.set(0);
+    commitSwipe(direction);
   };
 
   const renderCardContent = (club: Club, isTop: boolean = false) => (
@@ -194,22 +205,17 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
         <div className="h-full w-full flex-shrink-0 flex flex-col relative snap-start px-4 pt-4 pb-28">
           <div className="flex-1 relative mt-[env(safe-area-inset-top)]">
             {/* Background Card (Next) */}
-            {currentIndex + 1 < clubs.length && (
+            {previewClub && (
               <div className="absolute inset-x-0 bottom-0 top-0 z-0 origin-bottom pointer-events-none">
-                {renderCardContent(clubs[currentIndex + 1], false)}
+                {renderCardContent(previewClub, false)}
               </div>
             )}
 
-            <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={currentClub.id}
               style={{ x, rotate, touchAction: 'pan-y' }}
-                initial={{ opacity: 1, scale: 1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ 
-                  opacity: 0, 
-                  transition: { duration: 0.2 } 
-                }}
+              initial={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 1, scale: 1 }}
               drag="x"
               dragDirectionLock
               dragPropagation={false}
@@ -217,10 +223,9 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
               dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
               onDragEnd={handleDragEnd}
               className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing will-change-[transform,rotate]"
-              >
-                {renderCardContent(currentClub, true)}
-              </motion.div>
-          </AnimatePresence>
+            >
+              {renderCardContent(currentClub, true)}
+            </motion.div>
         </div>
 
         <div className="absolute bottom-24 left-0 right-0 flex justify-center items-center gap-6 z-20 pointer-events-none">

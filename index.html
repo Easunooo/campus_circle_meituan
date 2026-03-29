@@ -2,7 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <script>
+      (function () {
+        var viewport = document.querySelector('meta[name="viewport"]');
+        if (!viewport) return;
+
+        var ua = navigator.userAgent || '';
+        var isMobileUa = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        var isTouchPhone = window.matchMedia('(hover: none) and (pointer: coarse)').matches && window.screen.width <= 768;
+
+        if (isMobileUa || isTouchPhone) {
+          viewport.setAttribute('content', 'width=600, viewport-fit=cover');
+        }
+      })();
+    </script>
     <title>campus circle</title>
   </head>
   <body>
@@ -10,4 +24,3 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

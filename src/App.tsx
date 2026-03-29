@@ -96,10 +96,13 @@ export default function App() {
   };
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-surface flex flex-col relative shadow-xl overflow-hidden">
+    <div className="w-full h-[100dvh] min-h-[100svh] overflow-hidden">
+      <div className="w-full h-full flex justify-center overflow-hidden">
+      <div className="app-frame w-full max-w-md mx-auto h-[100dvh] min-h-[100svh] bg-surface flex flex-col relative overflow-hidden sm:shadow-xl">
+      <div className="flex-1 min-h-0 relative">
       <AnimatePresence mode="wait">
         {currentTab === 'interests' && (
-          <motion.div key="interests" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div key="interests" className="h-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <InterestSelection 
               selected={user.selectedInterests} 
               onToggle={handleToggleInterest} 
@@ -109,7 +112,7 @@ export default function App() {
         )}
 
         {currentTab === 'discovery' && (
-          <motion.div key="discovery" className="flex-1 flex flex-col min-h-0 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div key="discovery" className="h-full flex flex-col min-h-0 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <ClubSwiper 
               clubs={recommendedClubs} 
               onSwipeLeft={() => {}} 
@@ -121,7 +124,7 @@ export default function App() {
         )}
 
         {currentTab === 'intentions' && (
-          <motion.div key="intentions" className="flex-1 flex flex-col" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div key="intentions" className="h-full flex flex-col min-h-0 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <IntentionList 
               intentionIds={intentionList} 
               applications={applications}
@@ -139,7 +142,7 @@ export default function App() {
         )}
 
         {currentTab === 'profile' && (
-          <motion.div key="profile" className="flex-1 flex flex-col" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div key="profile" className="h-full flex flex-col min-h-0 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <Profile 
               user={user} 
               onEdit={() => setShowEditProfile(true)}
@@ -147,9 +150,10 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
 
       {currentTab !== 'interests' && (
-        <nav className="absolute bottom-5 left-1/2 -translate-x-1/2 z-50 w-auto bg-white/20 backdrop-blur-3xl rounded-full py-2 px-6 flex justify-center items-center gap-4 shadow-lg border border-white/20">
+        <nav className="absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-50 w-auto bg-white/20 backdrop-blur-3xl rounded-full py-2 px-6 flex justify-center items-center gap-4 shadow-lg border border-white/20">
           <NavButton 
             active={currentTab === 'discovery'} 
             onClick={() => setCurrentTab('discovery')} 
@@ -212,6 +216,8 @@ export default function App() {
           />
         )}
       </AnimatePresence>
+    </div>
+    </div>
     </div>
   );
 }

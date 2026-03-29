@@ -11,7 +11,7 @@ interface Props {
 
 export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onComplete }) => {
   return (
-    <div className="min-h-screen bg-surface px-6 pt-16 pb-10 flex flex-col">
+    <div className="h-full overflow-y-auto bg-surface px-6 pt-[max(4rem,env(safe-area-inset-top))] pb-[calc(2.5rem+env(safe-area-inset-bottom))] flex flex-col">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -46,7 +46,7 @@ export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onCompl
         })}
       </div>
  
-      <div className="mt-12 flex flex-col items-center gap-4">
+      <div className="mt-12 flex flex-col items-center gap-4 shrink-0">
         <div className="text-sm font-medium text-on-surface-variant">
           已选择 {selected.length} 个感兴趣领域 {selected.length === 0 && "(可跳过)"}
         </div>
