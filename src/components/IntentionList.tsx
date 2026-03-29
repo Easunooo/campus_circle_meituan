@@ -65,9 +65,9 @@ export const IntentionList: React.FC<Props> = ({ intentionIds, applications, onR
   return (
     <div className="flex-1 relative overflow-hidden bg-surface">
       {/* Premium Ambient background */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[40%] bg-primary/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[40%] bg-indigo-500/10 rounded-full blur-[100px]" />
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-50">
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[40%] bg-primary/10 rounded-full blur-[80px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[40%] bg-indigo-500/10 rounded-full blur-[80px]" />
       </div>
 
       <div className="absolute inset-0 z-10 px-5 sm:px-6 pt-10 pb-40 overflow-y-auto no-scrollbar">
@@ -213,9 +213,7 @@ export const IntentionList: React.FC<Props> = ({ intentionIds, applications, onR
 
 const ReorderItem = ({ club, index, isSelected, isSelectionMode, onToggle, onView, onDelete, onSubmitSingle }: any) => {
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+    <div 
       className={cn(
         "pl-1 pr-5 py-3 rounded-[2.2rem] flex items-center gap-1.5 transition-all duration-300 select-none group",
         isSelected 
@@ -287,7 +285,7 @@ const ReorderItem = ({ club, index, isSelected, isSelectionMode, onToggle, onVie
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
