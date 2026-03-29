@@ -83,7 +83,7 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
                     <button 
                       key={tag}
                       onClick={() => setQuery(tag)}
-                      className="px-3.5 py-1.2 bg-black/[0.04] rounded-full text-sm font-medium text-black/80 active:bg-black/10 transition-colors"
+                      className="px-4 py-2 bg-black/[0.04] rounded-full text-sm font-medium text-black/80 active:bg-black/10 transition-colors"
                     >
                       {tag}
                     </button>
@@ -113,7 +113,6 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
                       transition={{ duration: 0.2 }}
                       onClick={() => {
                         onSelectClub(club);
-                        onClose();
                       }}
                       className="w-full flex items-center gap-3.5 py-1 px-2 active:bg-black/5 rounded-2xl transition-colors relative"
                     >
@@ -125,10 +124,10 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
                         <div className="flex items-center gap-2">
                           <h4 className="font-semibold text-md text-black/90 leading-tight">{club.name}</h4>
                           {intentionIds.includes(club.id) && (
-                            <span className="text-[11px] font-semibold text-black/40 bg-black/[0.04] px-1.5 py-0.5 rounded-md uppercase tracking-widest whitespace-nowrap">已加入</span>
+                            <span className="text-[11px] font-semibold text-black/40 bg-black/[0.04] px-1.5 py-1 rounded-md uppercase tracking-widest whitespace-nowrap">已添加</span>
                           )}
                         </div>
-                        <div className="flex flex-wrap gap-1 mt-0.5">
+                        <div className="flex flex-wrap gap-1 mt-1.5">
                           {club.tags.slice(0, 2).map(tag => (
                             <span key={tag} className="text-sm font-medium text-black/50 bg-black/[0.04] px-2 py-0.5 rounded-full uppercase tracking-widest whitespace-nowrap inline-block transform scale-[0.8] origin-left -mr-1.5">
                               {tag}

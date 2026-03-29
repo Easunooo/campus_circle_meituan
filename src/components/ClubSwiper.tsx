@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'motion/react';
 import { useEffect } from 'react';
 import { Club } from '../constants';
 import { cn } from '../lib/utils';
@@ -15,6 +15,7 @@ interface Props {
 
 export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, onSearch, onSettings }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
   const opacity = useTransform(x, [-200, -150, 0, 150, 200], [0, 1, 1, 1, 0]);
@@ -42,16 +43,113 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
     }
   }, [currentClub?.id]);
 
-  const handleDragEnd = (_: any, info: any) => {
+  const handleDragEnd = async (_: any, info: any) => {
+    // If we've swiped past the threshold, animate fully off-screen
     if (info.offset.x > 100) {
+      setSwipeDirection('right');
+      await animate(x, 600, { duration: 0.35, ease: 'easeOut' });
       onSwipeRight(currentClub);
-      setCurrentIndex(prev => prev + 1);
+      // Don't increment index because onSwipeRight removes it from the parent list,
+      // which shifts the next item to the current index.
+      x.set(0);
     } else if (info.offset.x < -100) {
+      setSwipeDirection('left');
+      await animate(x, -600, { duration: 0.35, ease: 'easeOut' });
+      onSwipeLeft(currentClub);
+      setCurrentIndex(prev => prev + 1);
+      x.set(0);
+    } else {
+      // Otherwise, spring back to center
+      animate(x, 0, { type: 'spring', stiffness: 400, damping: 30 });
+    }
+  };
+
+  const swipe = async (direction: 'left' | 'right') => {
+    setSwipeDirection(direction);
+    // Use a slightly larger value to ensure it flies off screen
+    const targetX = direction === 'right' ? 600 : -600;
+    
+    await animate(x, targetX, { 
+      duration: 0.45,
+      ease: [0.32, 0.72, 0, 1] 
+    });
+
+    if (direction === 'right') {
+      onSwipeRight(currentClub);
+      // Right swipe removes the item from the list, so we don't increment
+    } else {
       onSwipeLeft(currentClub);
       setCurrentIndex(prev => prev + 1);
     }
+    
+    // Reset x to 0 for next card immediately
     x.set(0);
   };
+
+  const renderCardContent = (club: Club, isTop: boolean = false) => (
+    <div className="h-full w-full bg-surface rounded-[1.75rem] shadow-sm overflow-hidden relative isolate select-none">
+      <img 
+        src={club.coverImage} 
+        alt={club.name}
+        draggable="false"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      />
+      
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 to-transparent z-10" />
+
+      {isTop && (
+        <>
+          <motion.div 
+            style={{ opacity: likeOpacity }}
+            className="absolute top-24 left-10 border-4 border-emerald-500 text-emerald-500 font-headline font-black text-2xl px-4 py-2 rounded-xl rotate-[-15deg] uppercase z-20"
+          >
+            感兴趣
+          </motion.div>
+          <motion.div 
+            style={{ opacity: nopeOpacity }}
+            className="absolute top-24 right-10 border-4 border-rose-500 text-rose-500 font-headline font-black text-2xl px-4 py-2 rounded-xl rotate-[15deg] uppercase z-20"
+          >
+            跳过
+          </motion.div>
+        </>
+      )}
+
+      <div 
+        className="absolute inset-0 z-10 pointer-events-none bg-white/10"
+        style={{
+          maskImage: 'linear-gradient(to top, black 0%, black 15%, transparent 60%)',
+          WebkitMaskImage: 'linear-gradient(to top, black 0%, black 15%, transparent 60%)',
+          backdropFilter: 'blur(32px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(32px) saturate(180%)',
+        }}
+      />
+
+      <div className="absolute inset-x-0 bottom-0 p-8 pb-16 pt-20 z-20 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col gap-4">
+        <div>
+          <h2 className="text-3xl font-headline font-black text-white leading-tight mb-4 drop-shadow-md">{club.name}</h2>
+          <div className="flex flex-wrap gap-x-0 gap-y-1 mb-4">
+            {[...club.tags, ...club.practicalTags.slice(0, 2)].map((t, idx) => {
+              const isPractical = idx >= club.tags.length;
+              return (
+                <span 
+                  key={t} 
+                  className={cn(
+                    "inline-flex items-center justify-center px-3 py-1 text-4xs font-normal rounded-full backdrop-blur-sm uppercase tracking-wider whitespace-nowrap scale-[0.9] origin-center",
+                    isPractical ? "bg-black/20 text-white/90" : "bg-white/10 text-white"
+                  )}
+                >
+                  {t}
+                </span>
+              );
+            })}
+          </div>
+          <p className="text-base text-white/90 leading-relaxed line-clamp-3 font-medium drop-shadow-md">
+            {club.intro}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 
   if (currentIndex >= clubs.length) {
     return (
@@ -95,10 +193,23 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
         {/* Page 1: The Swiper View */}
         <div className="h-full w-full flex-shrink-0 flex flex-col relative snap-start px-4 pt-4 pb-28">
           <div className="flex-1 relative mt-[env(safe-area-inset-top)]">
-          <AnimatePresence mode="popLayout" initial={false}>
+            {/* Background Card (Next) */}
+            {currentIndex + 1 < clubs.length && (
+              <div className="absolute inset-x-0 bottom-0 top-0 z-0 origin-bottom pointer-events-none">
+                {renderCardContent(clubs[currentIndex + 1], false)}
+              </div>
+            )}
+
+            <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={currentClub.id}
               style={{ x, rotate, touchAction: 'pan-y' }}
+                initial={{ opacity: 1, scale: 1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ 
+                  opacity: 0, 
+                  transition: { duration: 0.2 } 
+                }}
               drag="x"
               dragDirectionLock
               dragPropagation={false}
@@ -106,76 +217,16 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
               dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
               onDragEnd={handleDragEnd}
               className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing will-change-[transform,rotate]"
-            >
-              <div className="h-full w-full bg-surface rounded-[1.75rem] shadow-xl overflow-hidden relative border border-black/5 isolate transform-gpu select-none">
-                <img 
-                  src={currentClub.coverImage} 
-                  alt={currentClub.name}
-                  draggable="false"
-                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                />
-                
-                <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 to-transparent z-10" />
-
-                <motion.div 
-                  style={{ opacity: likeOpacity }}
-                  className="absolute top-24 left-10 border-4 border-emerald-500 text-emerald-500 font-headline font-black text-2xl px-4 py-2 rounded-xl rotate-[-15deg] uppercase z-20"
-                >
-                  感兴趣
-                </motion.div>
-                <motion.div 
-                  style={{ opacity: nopeOpacity }}
-                  className="absolute top-24 right-10 border-4 border-rose-500 text-rose-500 font-headline font-black text-2xl px-4 py-2 rounded-xl rotate-[15deg] uppercase z-20"
-                >
-                  跳过
-                </motion.div>
-
-                <div 
-                  className="absolute inset-0 z-10 pointer-events-none bg-white/10"
-                  style={{
-                    maskImage: 'linear-gradient(to top, black 0%, black 15%, transparent 60%)',
-                    WebkitMaskImage: 'linear-gradient(to top, black 0%, black 15%, transparent 60%)',
-                    backdropFilter: 'blur(32px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(32px) saturate(180%)',
-                  }}
-                />
-
-                <div className="absolute inset-x-0 bottom-0 p-8 pb-16 pt-20 z-20 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col gap-4">
-                  <div>
-                    <h2 className="text-3xl font-headline font-black text-white leading-tight mb-4 drop-shadow-md">{currentClub.name}</h2>
-                    <div className="flex flex-wrap gap-x-0 gap-y-1 mb-4">
-                      {[...currentClub.tags, ...currentClub.practicalTags.slice(0, 2)].map((t, idx) => {
-                        const isPractical = idx >= currentClub.tags.length;
-                        return (
-                          <span 
-                            key={t} 
-                            className={cn(
-                              "inline-flex items-center justify-center px-3 py-1 text-4xs font-normal rounded-full backdrop-blur-sm uppercase tracking-wider whitespace-nowrap scale-[0.9] origin-center",
-                              isPractical ? "bg-black/20 text-white/90" : "bg-white/10 text-white"
-                            )}
-                          >
-                            {t}
-                          </span>
-                        );
-                      })}
-                    </div>
-                    <p className="text-base text-white/90 leading-relaxed line-clamp-3 font-medium drop-shadow-md">
-                      {currentClub.intro}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+              >
+                {renderCardContent(currentClub, true)}
+              </motion.div>
           </AnimatePresence>
         </div>
 
         <div className="absolute bottom-24 left-0 right-0 flex justify-center items-center gap-6 z-20 pointer-events-none">
           <button 
-            onClick={() => {
-              onSwipeLeft(currentClub);
-              setCurrentIndex(prev => prev + 1);
-            }}
-            className="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-on-surface-variant hover:text-rose-500 transition-colors pointer-events-auto"
+            onClick={() => swipe('left')}
+            className="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-on-surface-variant transition-colors pointer-events-auto active:scale-95"
           >
             <X size={28} />
           </button>
@@ -192,11 +243,8 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
             <Info size={22} />
           </button>
           <button 
-            onClick={() => {
-              onSwipeRight(currentClub);
-              setCurrentIndex(prev => prev + 1);
-            }}
-            className="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-primary transition-colors pointer-events-auto"
+            onClick={() => swipe('right')}
+            className="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-primary transition-colors pointer-events-auto active:scale-95"
           >
             <Heart size={28} fill="currentColor" />
           </button>
@@ -205,8 +253,8 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
       </div>
 
       {/* Page 2: Detail Card View */}
-      <div className="min-h-full w-full flex-shrink-0 flex flex-col snap-start px-4 pt-4 pb-12">
-        <div className="flex-1 w-full bg-white rounded-[1.75rem] shadow-xl relative z-20 px-8 pt-10 pb-4 flex flex-col mt-[env(safe-area-inset-top)] border border-black/5">
+      <div className="min-h-full w-full flex-shrink-0 flex flex-col snap-start px-4 pt-4 pb-48">
+        <div className="flex-1 w-full bg-white rounded-[1.75rem] shadow-xl relative z-20 px-8 pt-10 pb-4 flex flex-col mt-[env(safe-area-inset-top)]">
           
           <div className="mb-3">
             <h2 className="text-3xl font-headline font-black text-on-surface mb-2 tracking-tight">{currentClub.name}</h2>
@@ -282,14 +330,15 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
           <div className="flex flex-col gap-3 pt-2 pb-6">
               <button 
                 onClick={() => {
-                  onSwipeRight(currentClub);
-                  setCurrentIndex(prev => prev + 1);
                   const container = document.getElementById('discovery-scroll-container');
-                  if (container) {
-                    container.scrollTo({ top: 0, behavior: 'instant' });
+                  if (container && container.scrollTop > 10) {
+                    container.scrollTo({ top: 0, behavior: 'smooth' });
+                    setTimeout(() => swipe('right'), 350);
+                  } else {
+                    swipe('right');
                   }
                 }}
-                className="w-full py-4 rounded-full bg-rose-500 text-white font-bold text-base transition-colors hover:bg-rose-600 flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-full bg-rose-500 text-white font-bold text-base transition-colors hover:bg-rose-600 flex items-center justify-center gap-2 active:scale-[0.98]"
               >
                 <Heart size={18} fill="currentColor" />
                 添加到兴趣清单

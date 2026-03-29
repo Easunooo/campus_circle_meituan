@@ -16,6 +16,7 @@ export interface Club {
   memberCount: string;
   difficulty: number; // 1-3
   hasInterview: boolean;
+  requiresAttachment: boolean;
   officialAccount: string;
   groupNumber: string;
 }
@@ -40,6 +41,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '轮滑社官方',
     groupNumber: '987654321'
   },
@@ -62,6 +64,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '跆拳道官方',
     groupNumber: '987654320'
   },
@@ -84,6 +87,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '散打社官方',
     groupNumber: '987654319'
   },
@@ -106,6 +110,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '壁球社官方',
     groupNumber: '987654318'
   },
@@ -128,6 +133,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '辩论社官方',
     groupNumber: '987654317'
   },
@@ -150,6 +156,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '爱心社官方',
     groupNumber: '987654316'
   },
@@ -172,6 +179,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '道学社官方',
     groupNumber: '987654315'
   },
@@ -194,6 +202,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '吉他社官方',
     groupNumber: '987654314'
   },
@@ -216,6 +225,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: true,
+    requiresAttachment: true,
     officialAccount: '摄影社官方',
     groupNumber: '987654313'
   },
@@ -238,6 +248,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '黔中文化官方',
     groupNumber: '987654312'
   },
@@ -260,6 +271,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '空天社官方',
     groupNumber: '987654311'
   },
@@ -282,6 +294,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '跑步社官方',
     groupNumber: '987654310'
   },
@@ -304,6 +317,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '英辩社官方',
     groupNumber: '987654309'
   },
@@ -326,6 +340,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '车协官方',
     groupNumber: '987654308'
   },
@@ -348,6 +363,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: true,
     officialAccount: '群青美术官方',
     groupNumber: '987654307'
   },
@@ -370,6 +386,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '朗诵表达官方',
     groupNumber: '987654306'
   },
@@ -392,6 +409,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: true,
     officialAccount: '燕语配音官方',
     groupNumber: '987654305'
   },
@@ -414,6 +432,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '团委会官方',
     groupNumber: '987654304'
   },
@@ -436,6 +455,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '青年智库官方',
     groupNumber: '987654303'
   },
@@ -458,6 +478,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '海洋协会官方',
     groupNumber: '987654302'
   },
@@ -480,6 +501,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '手风琴官方',
     groupNumber: '987654301'
   },
@@ -502,6 +524,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: true,
     officialAccount: '算法协会官方',
     groupNumber: '987654300'
   },
@@ -524,6 +547,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '英交协会官方',
     groupNumber: '987654299'
   },
@@ -546,6 +570,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '茶熏瑜伽官方',
     groupNumber: '987654298'
   },
@@ -568,6 +593,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '咨询学会官方',
     groupNumber: '987654297'
   },
@@ -590,6 +616,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '魔协官方',
     groupNumber: '987654296'
   },
@@ -612,6 +639,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '心协官方',
     groupNumber: '987654295'
   },
@@ -634,6 +662,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '我们文学官方',
     groupNumber: '987654294'
   },
@@ -656,6 +685,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '五四文学官方',
     groupNumber: '987654293'
   },
@@ -678,6 +708,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '红学社官方',
     groupNumber: '987654292'
   },
@@ -700,6 +731,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '红会官方',
     groupNumber: '987654291'
   },
@@ -722,6 +754,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '网研协会官方',
     groupNumber: '987654290'
   },
@@ -744,6 +777,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '武侠协会官方',
     groupNumber: '987654289'
   },
@@ -766,6 +800,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '铁协官方',
     groupNumber: '987654288'
   },
@@ -788,6 +823,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '赣学会官方',
     groupNumber: '987654287'
   },
@@ -810,6 +846,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '双截棍官方',
     groupNumber: '987654286'
   },
@@ -832,6 +869,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '文物协会官方',
     groupNumber: '987654285'
   },
@@ -854,6 +892,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: 'Linux俱乐部官方',
     groupNumber: '987654284'
   },
@@ -876,6 +915,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '京昆社官方',
     groupNumber: '987654283'
   },
@@ -898,6 +938,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '美食协会官方',
     groupNumber: '987654282'
   },
@@ -920,6 +961,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '关爱猫猫官方',
     groupNumber: '987654281'
   },
@@ -942,6 +984,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '谜题协会官方',
     groupNumber: '987654280'
   },
@@ -964,6 +1007,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '青马会官方',
     groupNumber: '987654279'
   },
@@ -986,6 +1030,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '云研会官方',
     groupNumber: '987654278'
   },
@@ -1008,6 +1053,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '荆楚协会官方',
     groupNumber: '987654276'
   },
@@ -1030,6 +1076,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '徒步协会官方',
     groupNumber: '987654275'
   },
@@ -1052,6 +1099,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '西北研协官方',
     groupNumber: '987654274'
   },
@@ -1074,15 +1122,16 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '音乐剧社官方',
     groupNumber: '987654273'
   },
   {
     id: '50',
     name: '推理协会',
-    coverImage: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=1000&auto=format&fit=crop',
+    coverImage: 'https://images.unsplash.com/photo-1572409103520-c06d53056a25?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     detailImages: [
-      'https://images.unsplash.com/photo-1514525001715-dd0df48e02d4?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1667905173530-4c826cb86e41?q=80&w=1315&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=1000&auto=format&fit=crop'
     ],
     tags: ['文艺', '悬疑'],
@@ -1096,6 +1145,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '推理社官方',
     groupNumber: '987654272'
   },
@@ -1118,6 +1168,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '校园剧社官方',
     groupNumber: '987654271'
   },
@@ -1140,6 +1191,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '篮协官方',
     groupNumber: '987654270'
   },
@@ -1162,6 +1214,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '橄协官方',
     groupNumber: '987654269'
   },
@@ -1184,6 +1237,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '地信社官方',
     groupNumber: '987654268'
   },
@@ -1206,6 +1260,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '中音学社官方',
     groupNumber: '987654267'
   },
@@ -1228,6 +1283,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '讲堂志协官方',
     groupNumber: '987654266'
   },
@@ -1250,6 +1306,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '学术表达官方',
     groupNumber: '987654265'
   },
@@ -1272,6 +1329,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 2,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '科幻协会官方',
     groupNumber: '987654264'
   },
@@ -1294,6 +1352,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 1,
     hasInterview: false,
+    requiresAttachment: false,
     officialAccount: '电影协会官方',
     groupNumber: '987654263'
   },
@@ -1316,6 +1375,7 @@ export const CLUBS: Club[] = [
     memberCount: '30-100 人',
     difficulty: 3,
     hasInterview: true,
+    requiresAttachment: false,
     officialAccount: '趣听官方',
     groupNumber: '987654262'
   }

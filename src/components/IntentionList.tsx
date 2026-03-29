@@ -72,7 +72,7 @@ export const IntentionList: React.FC<Props> = ({ intentionIds, applications, onR
 
       <div className="absolute inset-0 z-10 px-6 pt-10 pb-40 overflow-y-auto no-scrollbar">
         <motion.div 
-          className="mb-6"
+          className="mb-6 px-1"
         >
           <h1 className="text-3xl font-headline font-black tracking-tight text-on-surface">我的社团</h1>
         </motion.div>
@@ -94,7 +94,7 @@ export const IntentionList: React.FC<Props> = ({ intentionIds, applications, onR
                 onMouseUp={handleMouseUp}
                 onMouseMove={handleMouseMove}
                 className={cn(
-                  "flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x cursor-grab active:cursor-grabbing select-none",
+                  "flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x cursor-grab active:cursor-grabbing select-none -mx-6 px-7 scroll-px-7",
                   isDragging && "snap-none"
                 )}
               >
@@ -153,7 +153,7 @@ export const IntentionList: React.FC<Props> = ({ intentionIds, applications, onR
                     : "bg-primary text-white"
                 )}
               >
-                {isSelectionMode ? '取消' : '选择'}
+                {isSelectionMode ? '退出选择' : '多选投递'}
               </button>
             )}
           </div>
@@ -179,8 +179,8 @@ export const IntentionList: React.FC<Props> = ({ intentionIds, applications, onR
             
             {intentionClubs.length === 0 && (
               <div className="py-20 flex flex-col items-center text-center px-10">
-                <div className="w-20 h-20 rounded-[2.5rem] bg-black/5 flex items-center justify-center mb-6 text-on-surface-variant/20">
-                  <Plus size={40} strokeWidth={1} />
+                <div className="w-20 h-20 rounded-[2.5rem] bg-black/5 flex items-center justify-center mb-6">
+                  <Plus size={40} strokeWidth={3} className="text-on-surface-variant opacity-20" />
                 </div>
                 <p className="text-on-surface-variant/80 font-bold">列表还是空的</p>
                 <p className="text-on-surface-variant/40 text-xs mt-2">快去发现页面寻找感兴趣的社团吧</p>
@@ -242,18 +242,6 @@ const ReorderItem = ({ club, index, isSelected, isSelectionMode, onToggle, onVie
       >
         <div className="relative flex-shrink-0">
           <img src={club.coverImage} className="w-16 h-16 rounded-[1.25rem] object-cover shadow-sm ring-4 ring-white/20" alt="" />
-          <AnimatePresence>
-            {isSelected && (
-              <motion.div 
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white border border-white shadow-md"
-              >
-                <CheckCircle2 size={14} strokeWidth={3} />
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
@@ -268,20 +256,36 @@ const ReorderItem = ({ club, index, isSelected, isSelectionMode, onToggle, onVie
           </div>
         </div>
 
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button 
-            onClick={(e) => { e.stopPropagation(); onSubmitSingle(); }}
-            className="p-2 text-on-surface-variant/20 hover:text-primary transition-colors duration-200"
-          >
-            <Send size={22} strokeWidth={2.5} />
-          </button>
-          <button 
-            onClick={(e) => { e.stopPropagation(); onDelete(); }}
-            className="p-2 text-on-surface-variant/20"
-          >
-            <Trash2 size={22} strokeWidth={2.5} />
-          </button>
-        </div>
+        {isSelectionMode ? (
+          <div className="flex flex-col justify-center items-center w-12 px-2 text-primary">
+            {isSelected ? (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="w-6 h-6 rounded-full bg-primary flex items-center justify-center shadow-md"
+              >
+                <CheckCircle2 size={16} strokeWidth={3} color="white" />
+              </motion.div>
+            ) : (
+              <div className="w-6 h-6 rounded-full border-2 border-on-surface-variant/20" />
+            )}
+          </div>
+        ) : (
+          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button 
+              onClick={(e) => { e.stopPropagation(); onSubmitSingle(); }}
+              className="p-2 text-on-surface-variant/20 hover:text-primary transition-colors duration-200"
+            >
+              <Send size={22} strokeWidth={2.5} />
+            </button>
+            <button 
+              onClick={(e) => { e.stopPropagation(); onDelete(); }}
+              className="p-2 text-on-surface-variant/20 hover:text-rose-500 transition-colors duration-200"
+            >
+              <Trash2 size={22} strokeWidth={2.5} />
+            </button>
+          </div>
+        )}
       </div>
     </motion.div>
   );

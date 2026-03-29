@@ -14,14 +14,14 @@ import { AppState, UserProfile, Application, Club } from './types';
 import { cn } from './lib/utils';
 
 const INITIAL_USER: UserProfile = {
-  name: 'Julian Chen',
+  name: 'Patrick Wang',
   avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1000&auto=format&fit=crop',
-  phone: '+86 138-0000-0000',
-  college: 'Stanford University',
+  phone: '18596231777',
+  college: 'Peking University',
   major: 'Computer Science',
-  enrollmentYear: '2022',
+  enrollmentYear: '2024',
   studentId: '202211001',
-  email: 'julian.chen@stanford.edu',
+  email: 'pattwang@stu.pku.edu.cn',
   selectedInterests: []
 };
 
@@ -67,11 +67,13 @@ export default function App() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (submissionData: any) => {
     const newApps: Application[] = pendingSubmissionIds.map(id => ({
       clubId: id,
       status: 'pending',
-      submittedAt: Date.now()
+      submittedAt: Date.now(),
+      reason: submissionData[id]?.reason,
+      attachment: submissionData[id]?.attachment
     }));
     setApplications(prev => [...prev, ...newApps]);
     setIntentionList(prev => prev.filter(id => !pendingSubmissionIds.includes(id)));
@@ -124,7 +126,9 @@ export default function App() {
               intentionIds={intentionList} 
               applications={applications}
               onReorder={setIntentionList}
-              onViewClub={setActiveClubDetail}
+              onViewClub={(club) => {
+                setActiveClubDetail(club);
+              }}
               onDelete={handleDeleteFromIntention}
               onSubmit={(ids) => {
                 setPendingSubmissionIds(ids);
@@ -167,16 +171,20 @@ export default function App() {
         </nav>
       )}
 
-      <ClubDetail 
-        club={activeClubDetail} 
-        onClose={() => setActiveClubDetail(null)} 
-        onLike={handleLike}
-        onSubmit={(club) => {
-          setPendingSubmissionIds([club.id]);
-          setShowSubmission(true);
-        }}
-        isLiked={activeClubDetail ? intentionList.includes(activeClubDetail.id) : false}
-      />
+      <AnimatePresence>
+        {activeClubDetail && (
+          <ClubDetail 
+            club={activeClubDetail} 
+            onClose={() => setActiveClubDetail(null)} 
+            onLike={handleLike}
+            onSubmit={(club) => {
+              setPendingSubmissionIds([club.id]);
+              setShowSubmission(true);
+            }}
+            isLiked={intentionList.includes(activeClubDetail.id)}
+          />
+        )}
+      </AnimatePresence>
 
       <SearchOverlay 
         isOpen={showSearch} 
@@ -189,6 +197,7 @@ export default function App() {
         {showSubmission && (
           <SubmissionModal 
             user={user} 
+            clubs={CLUBS.filter(c => pendingSubmissionIds.includes(c.id))}
             onCancel={() => setShowSubmission(false)} 
             onSubmit={handleSubmit} 
           />

@@ -24,21 +24,24 @@ export const Profile: React.FC<Props> = ({ user, onEdit }) => {
 
       <div className="absolute inset-0 z-10 overflow-y-auto no-scrollbar pt-20 pb-40">
         <section className="flex flex-col items-center mb-10 px-8">
-          <motion.div 
-            className="relative"
-          >
-            <div className="w-32 h-32 rounded-[2.5rem] overflow-hidden shadow-xl border-[4px] border-white/60 backdrop-blur-md">
-              <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" />
-            </div>
-            <button className="absolute -bottom-2 -right-2 bg-white backdrop-blur-md p-3 rounded-2xl shadow-lg border border-white/40 text-on-surface hover:text-primary transition-all">
+          <div className="relative">
+            <motion.div 
+              whileTap={{ scale: 0.97, rotate: -2 }}
+              className="cursor-pointer"
+            >
+              <div className="w-32 h-32 rounded-[2.5rem] overflow-hidden shadow-xl border-[4px] border-white/60 backdrop-blur-md">
+                <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" />
+              </div>
+            </motion.div>
+            <button className="absolute -bottom-2 -right-2 bg-white backdrop-blur-md p-3 rounded-2xl shadow-lg border border-white/40 text-on-surface hover:text-primary transition-all active:scale-90">
               <Camera size={24} strokeWidth={2} />
             </button>
-          </motion.div>
+          </div>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.05 }}
             className="mt-8 text-center"
           >
             <h1 className="text-3xl font-headline font-black tracking-tight text-on-surface mb-2">{user.name}</h1>
@@ -48,7 +51,10 @@ export const Profile: React.FC<Props> = ({ user, onEdit }) => {
               
               <div className="mt-6 flex flex-col items-center gap-1">
                 <div className="text-sm font-medium text-on-surface-variant/50 tracking-tight">{user.enrollmentYear}级</div>
-                <div className="text-sm font-medium text-on-surface-variant/50 tracking-tight">{user.email}</div>
+                <div className="flex items-center gap-1.5 text-on-surface-variant/50">
+                  <Mail size={16} strokeWidth={2.5} />
+                  <span className="text-sm font-medium tracking-tight">{user.email}</span>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -60,7 +66,7 @@ export const Profile: React.FC<Props> = ({ user, onEdit }) => {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.15 }}
           >
             <h3 className="px-0.5 text-xs font-black uppercase tracking-[0.2em] text-on-surface-variant/40 mb-4">账号管理</h3>
             <div className="bg-white/40 backdrop-blur-3xl rounded-[1.75rem] p-2 border border-white/60 shadow-sm overflow-hidden">
@@ -73,7 +79,7 @@ export const Profile: React.FC<Props> = ({ user, onEdit }) => {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.2 }}
           >
             <h3 className="px-0.5 text-xs font-black uppercase tracking-[0.2em] text-on-surface-variant/40 mb-4">更多信息</h3>
             <div className="bg-white/40 backdrop-blur-3xl rounded-[1.75rem] p-2 border border-white/60 shadow-sm overflow-hidden">
@@ -86,7 +92,7 @@ export const Profile: React.FC<Props> = ({ user, onEdit }) => {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.25 }}
             className="pt-6 flex flex-col items-center"
           >
             <button className="w-full py-5 rounded-[2rem] bg-on-surface/5 hover:bg-on-surface/10 text-on-surface-variant/60 font-headline font-black text-md transition-all duration-300 active:scale-[0.98]">

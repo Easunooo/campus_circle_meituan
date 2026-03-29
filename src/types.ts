@@ -23,6 +23,8 @@ export interface Application {
   clubId: string;
   status: 'pending' | 'interviewing' | 'passed' | 'rejected';
   submittedAt: number;
+  reason?: string;
+  attachment?: string; // URL or filename
 }
 
 export interface GlobalState {
