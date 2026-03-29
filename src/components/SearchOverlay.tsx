@@ -43,7 +43,8 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-          className="absolute inset-y-0 -left-[1px] -right-[1px] z-[100] flex flex-col bg-white/85 backdrop-blur-[40px]"
+          className="absolute inset-y-0 -left-[1px] -right-[1px] z-[100] flex flex-col bg-white/85 backdrop-blur-[40px] h-full"
+          style={{ touchAction: 'auto' }}
         >
           <header className="px-8 pt-12 pb-3 flex items-center gap-1.5">
             <button 
@@ -74,7 +75,10 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
             </div>
           </header>
 
-          <div className="flex-1 overflow-y-auto no-scrollbar px-8 pb-8 space-y-6">
+          <div 
+            className="flex-1 overflow-y-auto no-scrollbar px-8 pb-8 space-y-6 min-h-0 overscroll-contain"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
             {!query && (
               <div className="space-y-3 mt-4">
                 <h3 className="text-base font-semibold text-black/50 px-1">根据兴趣搜索</h3>

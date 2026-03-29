@@ -15,10 +15,10 @@ export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onCompl
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-10 text-center"
+        className="mb-6 sm:mb-10 text-center"
       >
-        <h1 className="font-headline text-[42px] font-extrabold tracking-tight mb-2 leading-[1.05]">找到你的兴趣圈子.</h1>
-        <p className="text-on-surface-variant text-[19px] font-medium opacity-70">挑选你感兴趣的领域，开启社团发现之旅</p>
+        <h1 className="font-headline text-[32px] sm:text-[42px] font-extrabold tracking-tight mb-2 leading-[1.05]">找到你的兴趣圈子.</h1>
+        <p className="text-on-surface-variant text-[16px] sm:text-[19px] font-medium opacity-70 px-4">挑选你感兴趣的领域，开启社团发现之旅</p>
       </motion.div>
  
       <div className="flex flex-wrap justify-center gap-x-2.5 gap-y-3.5 mb-auto px-1">
@@ -39,8 +39,8 @@ export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onCompl
                   : "bg-white border-outline-variant/25 text-on-surface hover:border-outline-variant/60"
               )}
             >
-              <span className="text-[22px] leading-none translate-y-[-0.5px]">{interest.icon}</span>
-              <span className="font-headline font-semibold text-[18.5px] tracking-tight translate-y-[-1px]">{interest.name}</span>
+              <span className="text-[18px] sm:text-[22px] leading-none translate-y-[-0.5px]">{interest.icon}</span>
+              <span className="font-headline font-semibold text-[15.5px] sm:text-[18.5px] tracking-tight translate-y-[-1px]">{interest.name}</span>
             </motion.button>
           );
         })}
@@ -53,7 +53,7 @@ export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onCompl
         <button
           onClick={onComplete}
           className={cn(
-            "w-full max-w-[280px] mx-auto py-3.5 rounded-full font-headline font-bold text-[20.5px] transition-all active:scale-[0.98]",
+            "w-full max-w-[280px] mx-auto py-3.5 rounded-full font-headline font-bold text-[17.5px] sm:text-[20.5px] transition-all active:scale-[0.98]",
             selected.length > 0 
               ? "editorial-gradient text-white shadow-xl" 
               : "bg-surface-container-high text-on-surface/60 hover:bg-surface-container-highest"
