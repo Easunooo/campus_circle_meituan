@@ -70,7 +70,7 @@ export const IntentionList: React.FC<Props> = ({ intentionIds, applications, onR
         <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[40%] bg-indigo-500/10 rounded-full blur-[100px]" />
       </div>
 
-      <div className="absolute inset-0 z-10 px-6 pt-10 pb-40 overflow-y-auto no-scrollbar">
+      <div className="absolute inset-0 z-10 px-5 sm:px-6 pt-10 pb-40 overflow-y-auto no-scrollbar">
         <motion.div 
           className="mb-6 px-1"
         >

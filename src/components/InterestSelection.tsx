@@ -11,7 +11,7 @@ interface Props {
 
 export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onComplete }) => {
   return (
-    <div className="h-full overflow-y-auto bg-surface px-6 pt-[max(4rem,env(safe-area-inset-top))] pb-[calc(2.5rem+env(safe-area-inset-bottom))] flex flex-col">
+    <div className="h-full overflow-y-auto bg-surface px-5 sm:px-6 pt-[max(4rem,env(safe-area-inset-top))] pb-[calc(2.5rem+env(safe-area-inset-bottom))] flex flex-col">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

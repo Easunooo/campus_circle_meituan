@@ -23,7 +23,7 @@ export const Profile: React.FC<Props> = ({ user, onEdit }) => {
       </div>
 
       <div className="absolute inset-0 z-10 overflow-y-auto no-scrollbar pt-20 pb-40">
-        <section className="flex flex-col items-center mb-10 px-8">
+        <section className="flex flex-col items-center mb-10 px-5 sm:px-8">
           <div className="relative">
             <motion.div 
               whileTap={{ scale: 0.97, rotate: -2 }}
@@ -60,7 +60,7 @@ export const Profile: React.FC<Props> = ({ user, onEdit }) => {
           </motion.div>
         </section>
 
-        <div className="px-8 space-y-8">
+        <div className="px-5 sm:px-8 space-y-8">
 
 
           <motion.section
