@@ -100,9 +100,16 @@ export default function App() {
       <div className="w-full h-full flex justify-center overflow-hidden">
       <div className="app-frame w-full sm:max-w-md mx-auto h-[100dvh] min-h-[100svh] bg-surface flex flex-col relative overflow-hidden sm:shadow-xl">
       <div className="flex-1 min-h-0 relative">
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {currentTab === 'interests' && (
-          <motion.div key="interests" className="h-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div 
+            key="interests" 
+            className="absolute inset-0" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
             <InterestSelection 
               selected={user.selectedInterests} 
               onToggle={handleToggleInterest} 
@@ -112,7 +119,14 @@ export default function App() {
         )}
 
         {currentTab === 'discovery' && (
-          <motion.div key="discovery" className="h-full flex flex-col min-h-0 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div 
+            key="discovery" 
+            className="absolute inset-0 flex flex-col min-h-0" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
             <ClubSwiper 
               clubs={recommendedClubs} 
               onSwipeLeft={() => {}} 
@@ -124,7 +138,14 @@ export default function App() {
         )}
 
         {currentTab === 'intentions' && (
-          <motion.div key="intentions" className="h-full flex flex-col min-h-0 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div 
+            key="intentions" 
+            className="absolute inset-0 flex flex-col min-h-0" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
             <IntentionList 
               intentionIds={intentionList} 
               applications={applications}
@@ -142,7 +163,14 @@ export default function App() {
         )}
 
         {currentTab === 'profile' && (
-          <motion.div key="profile" className="h-full flex flex-col min-h-0 relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div 
+            key="profile" 
+            className="absolute inset-0 flex flex-col min-h-0" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
             <Profile 
               user={user} 
               onEdit={() => setShowEditProfile(true)}
