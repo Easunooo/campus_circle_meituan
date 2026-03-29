@@ -17,8 +17,8 @@ export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onCompl
         animate={{ opacity: 1, y: 0 }}
         className="mb-10 text-center"
       >
-        <h1 className="font-headline text-[37px] font-extrabold tracking-tight mb-2 leading-tight">找到你的兴趣圈子.</h1>
-        <p className="text-on-surface-variant text-[17.5px] font-medium opacity-70">挑选你感兴趣的领域，开启社团发现之旅</p>
+        <h1 className="font-headline text-[42px] font-extrabold tracking-tight mb-2 leading-[1.05]">找到你的兴趣圈子.</h1>
+        <p className="text-on-surface-variant text-[19px] font-medium opacity-70">挑选你感兴趣的领域，开启社团发现之旅</p>
       </motion.div>
  
       <div className="flex flex-wrap justify-center gap-x-2.5 gap-y-3.5 mb-auto px-1">
@@ -30,18 +30,17 @@ export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onCompl
           return (
             <motion.button
               key={`${interest.name}-${idx}`}
-              whileTap={{ scale: 0.95 }}
               onClick={() => onToggle(interest.name)}
               className={cn(
                 "flex items-center gap-2 py-2.5 rounded-full transition-all border-1.5 whitespace-nowrap",
                 extraPadding,
                 isSelected 
-                  ? "bg-primary/5 border-transparent text-primary shadow-sm ring-1 ring-primary/10" 
+                  ? "bg-primary/5 border-primary/5 text-primary shadow-sm" 
                   : "bg-white border-outline-variant/25 text-on-surface hover:border-outline-variant/60"
               )}
             >
-              <span className="text-lg leading-none">{interest.icon}</span>
-              <span className="font-headline font-semibold text-[15px] tracking-tight">{interest.name}</span>
+              <span className="text-[22px] leading-none translate-y-[-0.5px]">{interest.icon}</span>
+              <span className="font-headline font-semibold text-[18.5px] tracking-tight translate-y-[-1px]">{interest.name}</span>
             </motion.button>
           );
         })}
@@ -54,7 +53,7 @@ export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onCompl
         <button
           onClick={onComplete}
           className={cn(
-            "w-full py-[14px] rounded-full font-headline font-bold text-[17.5px] transition-all active:scale-[0.98]",
+            "w-full max-w-[280px] mx-auto py-3.5 rounded-full font-headline font-bold text-[20.5px] transition-all active:scale-[0.98]",
             selected.length > 0 
               ? "editorial-gradient text-white shadow-xl" 
               : "bg-surface-container-high text-on-surface/60 hover:bg-surface-container-highest"

@@ -83,7 +83,7 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
                     <button 
                       key={tag}
                       onClick={() => setQuery(tag)}
-                      className="px-4 py-1.5 bg-black/[0.04] rounded-full text-base font-medium text-black/80 active:bg-black/10 transition-colors"
+                      className="px-3.5 py-1.2 bg-black/[0.04] rounded-full text-sm font-medium text-black/80 active:bg-black/10 transition-colors"
                     >
                       {tag}
                     </button>
@@ -117,7 +117,7 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
                       }}
                       className="w-full flex items-center gap-3.5 py-1 px-2 active:bg-black/5 rounded-2xl transition-colors relative"
                     >
-                      <img src={club.coverImage} className="w-[64px] h-[64px] rounded-[18px] object-cover shadow-[0_4px_12px_rgba(0,0,0,0.05)] bg-black/5" alt="" />
+                      <img src={club.coverImage} className="w-[82px] h-[82px] rounded-[22px] object-cover shadow-[0_4px_16px_rgba(0,0,0,0.06)] bg-black/5" alt="" />
                       <div className={cn(
                         "flex-1 text-left py-3 flex flex-col justify-center min-h-[64px] border-black/5",
                         index !== results.length - 1 && "border-b"
@@ -125,17 +125,17 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, 
                         <div className="flex items-center gap-2">
                           <h4 className="font-semibold text-md text-black/90 leading-tight">{club.name}</h4>
                           {intentionIds.includes(club.id) && (
-                            <span className="text-[10px] font-semibold text-black/40 bg-black/[0.04] px-1.5 py-0.5 rounded-md uppercase tracking-widest whitespace-nowrap">已加入</span>
+                            <span className="text-[11px] font-semibold text-black/40 bg-black/[0.04] px-1.5 py-0.5 rounded-md uppercase tracking-widest whitespace-nowrap">已加入</span>
                           )}
                         </div>
-                        <div className="flex flex-wrap gap-1.5 mt-1">
+                        <div className="flex flex-wrap gap-1 mt-0.5">
                           {club.tags.slice(0, 2).map(tag => (
-                            <span key={tag} className="text-sm font-normal text-black/50 bg-black/[0.04] px-2 py-0.5 rounded-full uppercase tracking-widest whitespace-nowrap inline-block transform scale-[0.75] origin-left -mr-1.5">
+                            <span key={tag} className="text-sm font-medium text-black/50 bg-black/[0.04] px-2 py-0.5 rounded-full uppercase tracking-widest whitespace-nowrap inline-block transform scale-[0.8] origin-left -mr-1.5">
                               {tag}
                             </span>
                           ))}
                           {club.practicalTags.slice(0, 1).map(tag => (
-                            <span key={tag} className="text-sm font-normal text-black/60 bg-black/[0.08] px-2 py-0.5 rounded-full uppercase tracking-widest whitespace-nowrap inline-block transform scale-[0.75] origin-left -mr-1.5">
+                            <span key={tag} className="text-sm font-medium text-black/60 bg-black/[0.08] px-2 py-0.5 rounded-full uppercase tracking-widest whitespace-nowrap inline-block transform scale-[0.8] origin-left -mr-1.5">
                               {tag}
                             </span>
                           ))}
