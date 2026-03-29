@@ -14,6 +14,20 @@
   --color-on-surface: #2e333a;
   --color-on-surface-variant: #5b5f67;
   --color-outline-variant: #aeb2bb;
+
+  --font-size-5xs: 5px;
+  --font-size-4xs: 6px;
+  --font-size-3xs: 8px;
+  --font-size-2xs: 9px;
+  --font-size-xs: 10px;
+  --font-size-sm: 11.5px;
+  --font-size-base: 13.5px;
+  --font-size-md: 14.5px;
+  --font-size-lg: 19px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 26px;
+  --font-size-3xl: 30px;
+  --font-size-display: 38px;
 }
 
 @layer base {

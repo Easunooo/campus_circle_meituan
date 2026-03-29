@@ -1,147 +1,149 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Club } from '../constants';
-import { X, MapPin, Clock, Users, Star, ChevronRight, Heart } from 'lucide-react';
+import { X, MapPin, Clock, Users, Star, ChevronRight, Heart, Send } from 'lucide-react';
+import { cn } from '../lib/utils';
 
 interface Props {
   club: Club | null;
   onClose: () => void;
   onLike: (club: Club) => void;
+  onSubmit: (club: Club) => void;
+  isLiked: boolean;
 }
 
-export const ClubDetail: React.FC<Props> = ({ club, onClose, onLike }) => {
+export const ClubDetail: React.FC<Props> = ({ club, onClose, onLike, onSubmit, isLiked }) => {
   if (!club) return null;
 
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="fixed inset-0 z-[100] bg-white overflow-y-auto no-scrollbar"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0 z-[100] bg-surface/80 backdrop-blur-md flex flex-col pt-16 pb-12 px-4 overflow-y-auto no-scrollbar"
       >
-        <div className="relative">
-          <button 
-            onClick={onClose}
-            className="fixed top-6 left-6 z-10 w-10 h-10 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center text-white"
-          >
-            <X size={20} />
-          </button>
+        <button 
+          onClick={onClose}
+          className="absolute top-6 left-6 z-[110] w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-on-surface border border-black/5 shadow-lg active:scale-90 transition-all"
+        >
+          <X size={20} strokeWidth={2.5} />
+        </button>
 
-          <div className="h-[50vh] w-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar">
-            {club.detailImages.map((img, i) => (
-              <img 
-                key={i} 
-                src={img} 
-                alt={`${club.name} ${i}`} 
-                draggable="false"
-                className="h-full w-full object-cover flex-shrink-0 snap-center pointer-events-none"
-              />
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+          className="w-full bg-white rounded-[2rem] shadow-2xl relative z-20 px-8 pt-12 pb-8 flex flex-col border border-black/5"
+        >
+          <div className="mb-3">
+            <h2 className="text-3xl font-headline font-black text-on-surface mb-2 tracking-tight">{club.name}</h2>
+            <div className="flex flex-wrap gap-0 text-on-surface-variant">
+              {club.tags.map(t => (
+                <span key={t} className="text-4xs bg-primary/10 text-primary px-3 py-1 rounded-full font-medium uppercase tracking-[0.02em] whitespace-nowrap scale-[0.9] origin-center">{t}</span>
+              ))}
+            </div>
+          </div>
+
+          {club.detailImages && club.detailImages.length > 0 && (
+            <div className="h-[26vh] flex overflow-x-auto snap-x snap-mandatory no-scrollbar mb-10 -mx-8 px-8 gap-3">
+              {club.detailImages.map((img, i) => (
+                <img 
+                  key={i} 
+                  src={img} 
+                  alt={`${club.name} ${i}`} 
+                  className="h-full w-[80%] object-cover rounded-2xl flex-shrink-0 snap-center bg-surface-variant shadow-sm border border-black/5"
+                />
+              ))}
+            </div>
+          )}
+          
+          <div className="grid grid-cols-2 gap-x-8 gap-y-6 mb-12">
+            {[
+              { label: '社团类型', value: club.type },
+              { label: '活动时间', value: club.time },
+              { label: '招新人数', value: club.memberCount },
+              { label: '有无面试', value: club.hasInterview ? '有面试' : '无面试' },
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col gap-1">
+                <span className="text-xs text-on-surface-variant">{item.label}</span>
+                <span className="text-md font-semibold text-on-surface">{item.value}</span>
+              </div>
             ))}
           </div>
 
-          <div className="px-6 pt-8 pb-32">
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h1 className="text-3xl font-headline font-extrabold mb-2">{club.name}</h1>
-                <div className="flex flex-wrap gap-2">
-                  {club.tags.map(t => (
-                    <span key={t} className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full">{t}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-surface-container-low p-3.5 rounded-2xl">
-                <div className="flex items-center gap-2 text-primary mb-1">
-                  <Star size={14} />
-                  <span className="text-[9px] font-bold uppercase tracking-wider">社团类型</span>
-                </div>
-                <p className="font-bold text-sm">{club.type}</p>
-              </div>
-              <div className="bg-surface-container-low p-3.5 rounded-2xl">
-                <div className="flex items-center gap-2 text-primary mb-1">
-                  <Clock size={14} />
-                  <span className="text-[9px] font-bold uppercase tracking-wider">活动时间</span>
-                </div>
-                <p className="font-bold text-sm">{club.time}</p>
-              </div>
-              <div className="bg-surface-container-low p-3.5 rounded-2xl">
-                <div className="flex items-center gap-2 text-primary mb-1">
-                  <Users size={14} />
-                  <span className="text-[9px] font-bold uppercase tracking-wider">招新人数</span>
-                </div>
-                <p className="font-bold text-sm">{club.memberCount}</p>
-              </div>
-              <div className="bg-surface-container-low p-3.5 rounded-2xl">
-                <div className="flex items-center gap-2 text-primary mb-1">
-                  <Star size={14} />
-                  <span className="text-[9px] font-bold uppercase tracking-wider">有无面试</span>
-                </div>
-                <p className="font-bold text-sm">{club.hasInterview ? '有面试' : '无面试'}</p>
-              </div>
-            </div>
-
-            <div className="space-y-6 mb-10">
-              <section>
-                <h3 className="text-lg font-headline font-bold mb-2">社团简介</h3>
-                <p className="text-sm text-on-surface-variant leading-relaxed">{club.fullIntro}</p>
+          <div className="space-y-8 mb-12">
+            {[
+              { title: '简介', content: club.fullIntro },
+              { title: '日常', content: club.activities },
+              { title: '收获', content: club.benefits },
+            ].map((section, i) => (
+              <section key={i}>
+                <h3 className="text-md font-bold mb-2 text-on-surface">{section.title}</h3>
+                <p className="text-base text-on-surface-variant leading-relaxed">
+                  {section.content}
+                </p>
               </section>
-              <section>
-                <h3 className="text-lg font-headline font-bold mb-2">日常活动</h3>
-                <p className="text-sm text-on-surface-variant leading-relaxed">{club.activities}</p>
-              </section>
-              <section>
-                <h3 className="text-lg font-headline font-bold mb-2">加入收获</h3>
-                <p className="text-sm text-on-surface-variant leading-relaxed">{club.benefits}</p>
-              </section>
-            </div>
-
-            <section className="bg-surface-container-low rounded-3xl p-5 space-y-5">
-              <h3 className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">官方渠道</h3>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-primary">
-                    <Star size={18} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-bold text-on-surface-variant">公众号</p>
-                    <p className="font-bold text-sm">{club.officialAccount}</p>
-                  </div>
-                </div>
-                <button className="px-3 py-1.5 bg-on-surface text-white text-[10px] font-bold rounded-full">去关注</button>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-primary">
-                    <Users size={18} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-bold text-on-surface-variant">招新群</p>
-                    <p className="font-bold text-sm">{club.groupNumber}</p>
-                  </div>
-                </div>
-                <button className="px-3 py-1.5 border border-outline-variant text-on-surface text-[10px] font-bold rounded-full">一键加群</button>
-              </div>
-            </section>
+            ))}
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 p-6 bg-white/80 backdrop-blur-xl border-t border-black/5">
-            <button 
-              onClick={() => {
-                onLike(club);
-                onClose();
-              }}
-              className="w-full editorial-gradient py-3.5 rounded-full text-white font-headline font-bold text-base flex items-center justify-center gap-2 shadow-xl shadow-primary/20"
-            >
-              <Heart size={18} fill="currentColor" />
-              加入意向清单
-            </button>
+          <div className="mb-6 pb-2">
+            <h3 className="text-md font-bold mb-4 text-on-surface">联系渠道</h3>
+            <div className="space-y-1">
+              <div className="flex justify-between items-center py-4 border-b border-black/[0.03]">
+                 <span className="text-base text-on-surface-variant">公众号</span>
+                 <div className="flex items-center gap-3">
+                   <span className="text-base font-semibold text-on-surface">{club.officialAccount}</span>
+                   <button className="px-4 py-1.5 bg-black/[0.05] text-on-surface text-sm font-bold rounded-full transition-colors">关注</button>
+                 </div>
+              </div>
+              <div className="flex justify-between items-center py-4">
+                 <span className="text-base text-on-surface-variant">招新群</span>
+                 <div className="flex items-center gap-3">
+                   <span className="text-base font-semibold text-on-surface">{club.groupNumber}</span>
+                   <button className="px-4 py-1.5 bg-black/[0.05] text-on-surface text-sm font-bold rounded-full transition-colors">加群</button>
+                 </div>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <div className="flex flex-col gap-3 pt-2">
+              <button 
+                onClick={() => {
+                  if (!isLiked) {
+                    onLike(club);
+                  }
+                  onClose();
+                }}
+                className={cn(
+                  "w-full py-4 rounded-full font-bold text-base transition-colors flex items-center justify-center gap-2",
+                  isLiked 
+                    ? "bg-black/[0.05] text-on-surface/40 cursor-default" 
+                    : "bg-rose-500 text-white hover:bg-rose-600"
+                )}
+              >
+                <Heart size={18} fill={isLiked ? "currentColor" : "none"} />
+                <span>{isLiked ? '已添加到意向清单' : '添加到意向清单'}</span>
+              </button>
+
+              {isLiked && (
+                <button 
+                  onClick={() => {
+                    onSubmit(club);
+                    onClose();
+                  }}
+                  className="w-full py-4 rounded-full bg-rose-500 text-white font-bold text-base transition-all hover:bg-rose-600 active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-rose-500/20"
+                >
+                  <Send size={18} />
+                  <span>立即申请投递</span>
+                </button>
+              )}
+              
+
+          </div>
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   );
 };
+

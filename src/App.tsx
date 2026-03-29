@@ -38,12 +38,18 @@ export default function App() {
 
   // Filter and sort clubs based on interests
   const recommendedClubs = useMemo(() => {
-    return [...CLUBS].sort((a, b) => {
+    // Filter out clubs that are already in the intention list or have an application
+    const filteredClubs = CLUBS.filter(club => 
+      !intentionList.includes(club.id) && 
+      !applications.some(app => app.clubId === club.id)
+    );
+
+    return [...filteredClubs].sort((a, b) => {
       const aMatch = a.tags.filter(t => user.selectedInterests.includes(t)).length;
       const bMatch = b.tags.filter(t => user.selectedInterests.includes(t)).length;
       return bMatch - aMatch;
     });
-  }, [user.selectedInterests]);
+  }, [user.selectedInterests, intentionList, applications]);
 
   const handleToggleInterest = (tag: string) => {
     setUser(prev => {
@@ -51,10 +57,7 @@ export default function App() {
       if (exists) {
         return { ...prev, selectedInterests: prev.selectedInterests.filter(t => t !== tag) };
       }
-      if (prev.selectedInterests.length < 5) {
-        return { ...prev, selectedInterests: [...prev.selectedInterests, tag] };
-      }
-      return prev;
+      return { ...prev, selectedInterests: [...prev.selectedInterests, tag] };
     });
   };
 
@@ -79,6 +82,10 @@ export default function App() {
     setTimeout(() => {
       setApplications(prev => prev.map(a => ({ ...a, status: 'interviewing' })));
     }, 5000);
+  };
+
+  const handleDeleteFromIntention = (clubId: string) => {
+    setIntentionList(prev => prev.filter(id => id !== clubId));
   };
 
   const handleUpdateProfile = (newData: Partial<UserProfile>) => {
@@ -117,6 +124,8 @@ export default function App() {
               intentionIds={intentionList} 
               applications={applications}
               onReorder={setIntentionList}
+              onViewClub={setActiveClubDetail}
+              onDelete={handleDeleteFromIntention}
               onSubmit={(ids) => {
                 setPendingSubmissionIds(ids);
                 setShowSubmission(true);
@@ -162,12 +171,18 @@ export default function App() {
         club={activeClubDetail} 
         onClose={() => setActiveClubDetail(null)} 
         onLike={handleLike}
+        onSubmit={(club) => {
+          setPendingSubmissionIds([club.id]);
+          setShowSubmission(true);
+        }}
+        isLiked={activeClubDetail ? intentionList.includes(activeClubDetail.id) : false}
       />
 
       <SearchOverlay 
         isOpen={showSearch} 
         onClose={() => setShowSearch(false)} 
         onSelectClub={setActiveClubDetail} 
+        intentionIds={intentionList}
       />
 
       <AnimatePresence>
@@ -202,7 +217,7 @@ const NavButton = ({ active, onClick, icon, label }: any) => (
   >
     <div className={cn("transition-all duration-300", active && "scale-105")}>
       {React.cloneElement(icon, { 
-        size: 22,
+        size: 26,
         fill: active && (label === '意向' || label === 'Heart') ? 'currentColor' : 'none', 
         strokeWidth: 2
       })}

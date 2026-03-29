@@ -1,3 +1,5 @@
+import { Interest } from './types';
+
 export interface Club {
   id: string;
   name: string;
@@ -1341,6 +1343,32 @@ export const CLUBS: Club[] = [
   }
 ];
 
-export const INTEREST_TAGS = [
-  '文艺', '运动', '学术', '志愿', '电竞', '音乐', '舞蹈', '动漫', '科创', '辩论', '摄影', '语言'
+export const INTEREST_TAGS: Interest[] = [
+  { name: 'AI', icon: '🤖' },
+  { name: '文艺', icon: '🎨' },
+  { name: '体育', icon: '🏃' },
+  { name: '传统文化研究', icon: '📜' },
+  { name: '职场', icon: '💼' },
+  { name: '摄影', icon: '📸' },
+  { name: '音悦家', icon: '🎵' },
+  { name: '创业', icon: '💡' },
+  { name: '二次元', icon: '🐹' },
+  { name: '代码', icon: '🖥️' },
+  { name: '志愿', icon: '❤️' },
+  { name: '电影人', icon: '🎬' },
+  { name: '汉服', icon: '👗' },
+  { name: '多国语言', icon: '💬' },
+  { name: '萌宠', icon: '🐶' },
+  { name: '科技创新', icon: '🚀' },
+  { name: '桌游', icon: '🎲' },
+  { name: '健身', icon: '🏋️' },
+  { name: '舌辩之士', icon: '🗣️' },
+  { name: '天文', icon: '🔭' },
+  { name: '烹饪', icon: '🍳' },
+  { name: '流行舞', icon: '💃' },
+  { name: '桌游纸牌', icon: '🃏' },
+  { name: '理财控', icon: '💰' },
+  { name: '户外探险', icon: '⛰️' },
+  { name: '学术研究', icon: '📚' },
+  { name: '电竞', icon: '🎮' }
 ];

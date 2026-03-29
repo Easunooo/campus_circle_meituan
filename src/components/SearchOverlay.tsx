@@ -8,9 +8,10 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onSelectClub: (club: Club) => void;
+  intentionIds: string[];
 }
 
-export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub }) => {
+export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub, intentionIds }) => {
   const [query, setQuery] = useState('');
 
   const results = useMemo(() => {
@@ -42,7 +43,7 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub }
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-          className="fixed inset-0 z-[100] flex flex-col bg-white/85 backdrop-blur-[40px]"
+          className="absolute inset-0 z-[100] flex flex-col bg-white/85 backdrop-blur-[40px]"
         >
           <header className="px-8 pt-12 pb-3 flex items-center gap-1.5">
             <button 
@@ -52,14 +53,14 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub }
               <ChevronLeft size={24} />
             </button>
             <div className="flex-1 relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-black/40" size={17} />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-black/40" size={20} />
               <input
                 autoFocus
                 type="text"
                 placeholder="搜索社团、活动..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full bg-black/[0.06] border-none rounded-[14px] py-2.5 pl-10 pr-10 text-[15.5px] font-medium text-black placeholder:text-black/40 focus:ring-0 focus:outline-none focus:bg-black/[0.08] transition-colors"
+                className="w-full bg-black/[0.06] border-none rounded-[14px] py-2.5 pl-10 pr-10 text-md font-medium text-black placeholder:text-black/40 focus:ring-0 focus:outline-none focus:bg-black/[0.08] transition-colors"
                 style={{ WebkitAppearance: 'none' }}
               />
               {query && (
@@ -67,7 +68,7 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub }
                   onClick={() => setQuery('')}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-black/40 hover:text-black/60 transition-colors"
                 >
-                  <X size={16} />
+                  <X size={20} />
                 </button>
               )}
             </div>
@@ -76,13 +77,13 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub }
           <div className="flex-1 overflow-y-auto no-scrollbar px-8 pb-8 space-y-6">
             {!query && (
               <div className="space-y-3 mt-4">
-                <h3 className="text-[13px] font-semibold text-black/50 px-1">根据兴趣搜索</h3>
+                <h3 className="text-base font-semibold text-black/50 px-1">根据兴趣搜索</h3>
                 <div className="flex flex-wrap gap-2">
                   {suggestedInterests.map(tag => (
                     <button 
                       key={tag}
                       onClick={() => setQuery(tag)}
-                      className="px-4 py-1.5 bg-black/[0.04] rounded-full text-[14px] font-medium text-black/80 active:bg-black/10 transition-colors"
+                      className="px-4 py-1.5 bg-black/[0.04] rounded-full text-base font-medium text-black/80 active:bg-black/10 transition-colors"
                     >
                       {tag}
                     </button>
@@ -94,12 +95,12 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub }
             {query && results.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 text-black/40">
                 <Search size={42} className="opacity-20 mb-4" />
-                <p className="text-[15px] font-medium">未找到相关内容</p>
+                <p className="text-md font-medium">未找到相关内容</p>
               </div>
             ) : (
               <div className="flex flex-col mt-2">
                 {!query && (
-                  <h3 className="text-[13px] font-semibold text-black/50 mb-2 px-1">
+                  <h3 className="text-base font-semibold text-black/50 mb-2 px-1">
                     全部社团 ({results.length})
                   </h3>
                 )}
@@ -116,27 +117,32 @@ export const SearchOverlay: React.FC<Props> = ({ isOpen, onClose, onSelectClub }
                       }}
                       className="w-full flex items-center gap-3.5 py-1 px-2 active:bg-black/5 rounded-2xl transition-colors relative"
                     >
-                      <img src={club.coverImage} className="w-[50px] h-[50px] rounded-[14px] object-cover shadow-[0_2px_8px_rgba(0,0,0,0.04)] bg-black/5" alt="" />
+                      <img src={club.coverImage} className="w-[64px] h-[64px] rounded-[18px] object-cover shadow-[0_4px_12px_rgba(0,0,0,0.05)] bg-black/5" alt="" />
                       <div className={cn(
                         "flex-1 text-left py-3 flex flex-col justify-center min-h-[64px] border-black/5",
                         index !== results.length - 1 && "border-b"
                       )}>
-                        <h4 className="font-semibold text-[15px] text-black/90 leading-tight">{club.name}</h4>
-                        <div className="flex flex-wrap gap-1.5 mt-1.5">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold text-md text-black/90 leading-tight">{club.name}</h4>
+                          {intentionIds.includes(club.id) && (
+                            <span className="text-[10px] font-semibold text-black/40 bg-black/[0.04] px-1.5 py-0.5 rounded-md uppercase tracking-widest whitespace-nowrap">已加入</span>
+                          )}
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 mt-1">
                           {club.tags.slice(0, 2).map(tag => (
-                            <span key={tag} className="text-[10px] font-semibold text-black/40 bg-black/[0.03] px-1.5 py-0.5 rounded-md uppercase tracking-wider">
+                            <span key={tag} className="text-sm font-normal text-black/50 bg-black/[0.04] px-2 py-0.5 rounded-full uppercase tracking-widest whitespace-nowrap inline-block transform scale-[0.75] origin-left -mr-1.5">
                               {tag}
                             </span>
                           ))}
                           {club.practicalTags.slice(0, 1).map(tag => (
-                            <span key={tag} className="text-[10px] font-bold text-primary/60 bg-primary/[0.05] px-1.5 py-0.5 rounded-md">
+                            <span key={tag} className="text-sm font-normal text-black/60 bg-black/[0.08] px-2 py-0.5 rounded-full uppercase tracking-widest whitespace-nowrap inline-block transform scale-[0.75] origin-left -mr-1.5">
                               {tag}
                             </span>
                           ))}
                         </div>
                       </div>
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 text-black/20">
-                        <ChevronRight size={16} />
+                        <ChevronRight size={20} />
                       </div>
                     </motion.button>
                   ))}

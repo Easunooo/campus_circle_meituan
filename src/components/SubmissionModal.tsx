@@ -15,7 +15,7 @@ export const SubmissionModal: React.FC<Props> = ({ user, onSubmit, onCancel }) =
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[200] flex items-center justify-center p-6"
+      className="absolute inset-0 z-[200] flex items-center justify-center p-6"
     >
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
       
@@ -27,56 +27,56 @@ export const SubmissionModal: React.FC<Props> = ({ user, onSubmit, onCancel }) =
       >
         <div className="p-6 text-center">
           <h2 className="text-2xl font-headline font-extrabold mb-1">申请加入</h2>
-          <p className="text-xs text-on-surface-variant">请确认你的个人信息</p>
+          <p className="text-sm text-on-surface-variant">请确认你的个人信息</p>
         </div>
 
-        <div className="px-6 pb-6 space-y-5">
-          <div className="space-y-3.5">
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">姓名</label>
+        <div className="px-6 pb-6 space-y-4">
+          <div className="space-y-2.5">
+            <div className="space-y-0.5">
+              <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">姓名</label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                 <input 
-                   className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                   className="w-full bg-surface-container-low border-none rounded-2xl py-2.5 px-4 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                   defaultValue={user.name}
                 />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">院系/专业</label>
+            <div className="space-y-0.5">
+              <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">院系/专业</label>
               <div className="relative">
-                <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                 <input 
-                   className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                   className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                   defaultValue={`${user.college} / ${user.major}`}
                 />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">手机号</label>
+            <div className="space-y-0.5">
+              <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">手机号</label>
               <div className="relative">
-                <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                 <input 
-                   className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                   className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                   defaultValue={user.phone}
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-2 pt-1">
             <button 
               onClick={() => onSubmit({})}
-              className="w-full editorial-gradient py-3.5 rounded-full text-white font-headline font-bold text-base shadow-xl shadow-primary/20 flex items-center justify-center gap-2"
+              className="w-full editorial-gradient py-3 rounded-full text-white font-headline font-bold text-base shadow-xl flex items-center justify-center gap-2"
             >
               确认投递
-              <ArrowRight size={18} />
+              <ArrowRight size={22} />
             </button>
             <button 
               onClick={onCancel}
-              className="w-full py-3.5 rounded-full font-headline font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors"
+              className="w-full py-3 rounded-full font-headline font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors"
             >
               取消
             </button>

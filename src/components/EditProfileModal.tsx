@@ -29,7 +29,7 @@ export const EditProfileModal: React.FC<Props> = ({ user, onSave, onCancel }) =>
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[200] flex items-center justify-center p-6"
+      className="absolute inset-0 z-[200] flex items-center justify-center p-6"
     >
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
       
@@ -41,17 +41,17 @@ export const EditProfileModal: React.FC<Props> = ({ user, onSave, onCancel }) =>
       >
         <div className="p-6 text-center shrink-0">
           <h2 className="text-2xl font-headline font-extrabold mb-1 text-on-surface">修改资料</h2>
-          <p className="text-xs text-on-surface-variant">在此更新你的基本信息</p>
+          <p className="text-sm text-on-surface-variant">在此更新你的基本信息</p>
         </div>
 
-        <div className="px-6 pb-6 space-y-5 overflow-y-auto no-scrollbar flex-1">
-          <div className="space-y-3.5">
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">姓名</label>
+        <div className="px-6 pb-6 space-y-4 overflow-y-auto no-scrollbar flex-1">
+          <div className="space-y-2.5">
+            <div className="space-y-0.5">
+              <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">姓名</label>
               <div className="relative text-on-surface">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                 <input 
-                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                  className="w-full bg-surface-container-low border-none rounded-2xl py-2.5 px-4 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
@@ -59,23 +59,23 @@ export const EditProfileModal: React.FC<Props> = ({ user, onSave, onCancel }) =>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">大学</label>
+              <div className="space-y-0.5">
+                <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">大学</label>
                 <div className="relative text-on-surface">
-                  <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                  <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                   <input 
-                    className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                    className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                     value={formData.college}
                     onChange={(e) => setFormData({ ...formData, college: e.target.value })}
                   />
                 </div>
               </div>
-              <div className="space-y-1">
-                <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">入学年份</label>
+              <div className="space-y-0.5">
+                <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">入学年份</label>
                 <div className="relative text-on-surface">
-                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                   <input 
-                    className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                    className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                     value={formData.enrollmentYear}
                     placeholder="例: 2024"
                     onChange={(e) => setFormData({ ...formData, enrollmentYear: e.target.value })}
@@ -84,24 +84,24 @@ export const EditProfileModal: React.FC<Props> = ({ user, onSave, onCancel }) =>
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">专业</label>
+            <div className="space-y-0.5">
+              <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">专业</label>
               <div className="relative text-on-surface">
-                <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                <GraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                 <input 
-                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                   value={formData.major}
                   onChange={(e) => setFormData({ ...formData, major: e.target.value })}
                 />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">学号</label>
+            <div className="space-y-0.5">
+              <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">学号</label>
               <div className="relative text-on-surface">
-                <Hash className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                <Hash className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                 <input 
-                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                   value={formData.studentId}
                   placeholder="请输入学号"
                   onChange={(e) => setFormData({ ...formData, studentId: e.target.value })}
@@ -109,24 +109,24 @@ export const EditProfileModal: React.FC<Props> = ({ user, onSave, onCancel }) =>
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">手机号</label>
+            <div className="space-y-0.5">
+              <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">手机号</label>
               <div className="relative text-on-surface">
-                <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                 <input 
-                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant px-1">个人邮箱</label>
+            <div className="space-y-0.5">
+              <label className="text-2xs font-bold uppercase tracking-widest text-on-surface-variant px-1">个人邮箱</label>
               <div className="relative text-on-surface">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={16} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={20} />
                 <input 
-                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-sm font-bold focus:ring-2 focus:ring-primary/20"
+                  className="w-full bg-surface-container-low border-none rounded-2xl p-3.5 pl-11 text-base font-bold focus:ring-2 focus:ring-primary/20"
                   value={formData.email}
                   placeholder="example@edu.cn"
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -135,19 +135,17 @@ export const EditProfileModal: React.FC<Props> = ({ user, onSave, onCancel }) =>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2.5 pt-2 shrink-0">
+          <div className="flex flex-col gap-2 pt-1 shrink-0">
             <button 
               onClick={handleSave}
-              className="w-full editorial-gradient py-3.5 rounded-full text-white font-headline font-bold text-base shadow-xl shadow-primary/20 flex items-center justify-center gap-2"
+              className="w-full editorial-gradient py-3 rounded-full text-white font-headline font-bold text-base shadow-xl flex items-center justify-center"
             >
-              <Check size={18} />
               保存修改
             </button>
             <button 
               onClick={onCancel}
-              className="w-full py-3.5 rounded-full font-headline font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-full font-headline font-bold text-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-center"
             >
-              <X size={16} />
               取消
             </button>
           </div>

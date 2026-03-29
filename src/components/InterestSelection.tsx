@@ -10,51 +10,53 @@ interface Props {
 }
 
 export const InterestSelection: React.FC<Props> = ({ selected, onToggle, onComplete }) => {
-  const isFull = selected.length === 5;
-
   return (
     <div className="min-h-screen bg-surface px-6 pt-16 pb-10 flex flex-col">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-10"
+        className="mb-10 text-center"
       >
-        <h1 className="font-headline text-3xl font-extrabold tracking-tight mb-2">找到适合你的社团</h1>
-        <p className="text-on-surface-variant text-base">请选择感兴趣的领域（最多 5 个）</p>
+        <h1 className="font-headline text-[37px] font-extrabold tracking-tight mb-2 leading-tight">找到你的兴趣圈子.</h1>
+        <p className="text-on-surface-variant text-[17.5px] font-medium opacity-70">挑选你感兴趣的领域，开启社团发现之旅</p>
       </motion.div>
-
-      <div className="grid grid-cols-3 gap-3 mb-auto">
-        {INTEREST_TAGS.map((tag) => {
-          const isSelected = selected.includes(tag);
+ 
+      <div className="flex flex-wrap justify-center gap-x-2.5 gap-y-3.5 mb-auto px-1">
+        {INTEREST_TAGS.map((interest, idx) => {
+          const isSelected = selected.includes(interest.name);
+          // Create variety by slightly varying padding based on index or name length
+          const extraPadding = interest.name.length > 2 ? "px-6" : "px-4";
+          
           return (
             <motion.button
-              key={tag}
+              key={`${interest.name}-${idx}`}
               whileTap={{ scale: 0.95 }}
-              onClick={() => onToggle(tag)}
-              disabled={!isSelected && isFull}
+              onClick={() => onToggle(interest.name)}
               className={cn(
-                "h-20 rounded-2xl flex flex-col items-center justify-center gap-1.5 transition-all border",
+                "flex items-center gap-2 py-2.5 rounded-full transition-all border-1.5 whitespace-nowrap",
+                extraPadding,
                 isSelected 
-                  ? "editorial-gradient text-white border-transparent shadow-lg shadow-primary/20" 
-                  : "bg-white border-outline-variant/20 text-on-surface hover:bg-surface-container-low disabled:opacity-50"
+                  ? "bg-primary/5 border-transparent text-primary shadow-sm ring-1 ring-primary/10" 
+                  : "bg-white border-outline-variant/25 text-on-surface hover:border-outline-variant/60"
               )}
             >
-              <span className="font-headline font-bold text-sm">{tag}</span>
+              <span className="text-lg leading-none">{interest.icon}</span>
+              <span className="font-headline font-semibold text-[15px] tracking-tight">{interest.name}</span>
             </motion.button>
           );
         })}
       </div>
-
+ 
       <div className="mt-12 flex flex-col items-center gap-4">
         <div className="text-sm font-medium text-on-surface-variant">
-          已选择 {selected.length} / 5 {selected.length === 0 && "(可跳过)"}
+          已选择 {selected.length} 个感兴趣领域 {selected.length === 0 && "(可跳过)"}
         </div>
         <button
           onClick={onComplete}
           className={cn(
-            "w-full py-4 rounded-full font-headline font-bold text-lg transition-all active:scale-[0.98]",
+            "w-full py-[14px] rounded-full font-headline font-bold text-[17.5px] transition-all active:scale-[0.98]",
             selected.length > 0 
-              ? "editorial-gradient text-white shadow-xl shadow-primary/20" 
+              ? "editorial-gradient text-white shadow-xl" 
               : "bg-surface-container-high text-on-surface/60 hover:bg-surface-container-highest"
           )}
         >

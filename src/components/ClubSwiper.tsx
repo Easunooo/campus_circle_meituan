@@ -16,7 +16,7 @@ interface Props {
 export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, onSearch, onSettings }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [-25, 25]);
+  const rotate = useTransform(x, [-200, 200], [-15, 15]);
   const opacity = useTransform(x, [-200, -150, 0, 150, 200], [0, 1, 1, 1, 0]);
   const likeOpacity = useTransform(x, [50, 150], [0, 1]);
   const nopeOpacity = useTransform(x, [-150, -50], [1, 0]);
@@ -76,31 +76,34 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
             e.stopPropagation();
             onSearch();
           }}
-          className="w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md shadow-sm bg-white/10 text-white hover:bg-white/20 transition-colors"
+          className="w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-md shadow-sm bg-white/10 text-white hover:bg-white/20 transition-colors"
         >
-          <Search size={16} />
+          <Search size={22} />
         </button>
         <button 
           onClick={(e) => {
             e.stopPropagation();
             onSettings();
           }}
-          className="w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md shadow-sm bg-white/10 text-white hover:bg-white/20 transition-colors"
+          className="w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-md shadow-sm bg-white/10 text-white hover:bg-white/20 transition-colors"
         >
-          <Settings size={16} />
+          <Settings size={22} />
         </button>
       </div>
 
-      <div id="discovery-scroll-container" className="h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar snap-y snap-mandatory relative scroll-smooth">
+      <div id="discovery-scroll-container" className="h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar snap-y snap-proximity relative scroll-smooth">
         {/* Page 1: The Swiper View */}
         <div className="h-full w-full flex-shrink-0 flex flex-col relative snap-start px-4 pt-4 pb-28">
           <div className="flex-1 relative mt-[env(safe-area-inset-top)]">
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={currentClub.id}
-              style={{ x, rotate }}
+              style={{ x, rotate, touchAction: 'pan-y' }}
               drag="x"
+              dragDirectionLock
+              dragPropagation={false}
               dragConstraints={{ left: 0, right: 0 }}
+              dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
               onDragEnd={handleDragEnd}
               className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing will-change-[transform,rotate]"
             >
@@ -137,18 +140,26 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
                   }}
                 />
 
-                <div className="absolute inset-x-0 bottom-0 p-8 pt-20 z-20 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col gap-4">
+                <div className="absolute inset-x-0 bottom-0 p-8 pb-16 pt-20 z-20 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col gap-4">
                   <div>
-                    <h2 className="text-3xl font-headline font-extrabold text-white leading-tight mb-3 drop-shadow-md">{currentClub.name}</h2>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {currentClub.tags.map(t => (
-                        <span key={t} className="inline-flex items-center justify-center px-3 h-[22px] bg-white/20 text-white text-[10px] font-bold rounded-full backdrop-blur-md uppercase tracking-wider">{t}</span>
-                      ))}
-                      {currentClub.practicalTags.slice(0, 2).map(t => (
-                        <span key={t} className="inline-flex items-center justify-center px-3 h-[22px] bg-black/30 text-white/90 text-[10px] font-bold rounded-full backdrop-blur-md uppercase tracking-wider">{t}</span>
-                      ))}
+                    <h2 className="text-3xl font-headline font-black text-white leading-tight mb-4 drop-shadow-md">{currentClub.name}</h2>
+                    <div className="flex flex-wrap gap-x-0 gap-y-1 mb-4">
+                      {[...currentClub.tags, ...currentClub.practicalTags.slice(0, 2)].map((t, idx) => {
+                        const isPractical = idx >= currentClub.tags.length;
+                        return (
+                          <span 
+                            key={t} 
+                            className={cn(
+                              "inline-flex items-center justify-center px-3 py-1 text-4xs font-normal rounded-full backdrop-blur-sm uppercase tracking-wider whitespace-nowrap scale-[0.9] origin-center",
+                              isPractical ? "bg-black/20 text-white/90" : "bg-white/10 text-white"
+                            )}
+                          >
+                            {t}
+                          </span>
+                        );
+                      })}
                     </div>
-                    <p className="text-[13px] text-white/90 leading-relaxed line-clamp-3 font-medium drop-shadow-md">
+                    <p className="text-base text-white/90 leading-relaxed line-clamp-3 font-medium drop-shadow-md">
                       {currentClub.intro}
                     </p>
                   </div>
@@ -166,7 +177,7 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
             }}
             className="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-on-surface-variant hover:text-rose-500 transition-colors pointer-events-auto"
           >
-            <X size={24} />
+            <X size={28} />
           </button>
           <button 
             onClick={() => {
@@ -178,7 +189,7 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
             }}
             className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors pointer-events-auto shadow-md"
           >
-            <Info size={20} />
+            <Info size={22} />
           </button>
           <button 
             onClick={() => {
@@ -187,27 +198,27 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
             }}
             className="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-primary transition-colors pointer-events-auto"
           >
-            <Heart size={24} fill="currentColor" />
+            <Heart size={28} fill="currentColor" />
           </button>
         </div>
         
       </div>
 
       {/* Page 2: Detail Card View */}
-      <div className="min-h-full w-full flex-shrink-0 flex flex-col snap-start px-4 pt-4 pb-28">
-        <div className="flex-1 w-full bg-white rounded-[1.75rem] shadow-xl relative z-20 px-6 pt-10 pb-8 flex flex-col mt-[env(safe-area-inset-top)] border border-black/5">
+      <div className="min-h-full w-full flex-shrink-0 flex flex-col snap-start px-4 pt-4 pb-12">
+        <div className="flex-1 w-full bg-white rounded-[1.75rem] shadow-xl relative z-20 px-8 pt-10 pb-4 flex flex-col mt-[env(safe-area-inset-top)] border border-black/5">
           
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-on-surface mb-3 tracking-tight">{currentClub.name}</h2>
-            <div className="flex flex-wrap gap-2 text-on-surface-variant">
+          <div className="mb-3">
+            <h2 className="text-3xl font-headline font-black text-on-surface mb-2 tracking-tight">{currentClub.name}</h2>
+            <div className="flex flex-wrap gap-x-1.5 gap-y-1 text-on-surface-variant">
               {currentClub.tags.map(t => (
-                <span key={t} className="text-[11px] bg-surface-container px-3 py-1 rounded-full font-medium">{t}</span>
+                <span key={t} className="text-4xs bg-primary/10 text-primary px-3 py-1 rounded-full font-normal uppercase tracking-[0.02em] scale-[0.85] origin-left whitespace-nowrap">{t}</span>
               ))}
             </div>
           </div>
 
           {currentClub.detailImages && currentClub.detailImages.length > 0 && (
-            <div className="h-[26vh] w-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar mb-10 -mx-6 px-6 gap-3">
+            <div className="h-[26vh] flex overflow-x-auto snap-x snap-mandatory no-scrollbar mb-10 -mx-8 px-8 gap-3">
               {currentClub.detailImages.map((img, i) => (
                 <img 
                   key={i} 
@@ -227,8 +238,8 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
               { label: '有无面试', value: currentClub.hasInterview ? '有面试' : '无面试' },
             ].map((item, i) => (
               <div key={i} className="flex flex-col gap-1">
-                <span className="text-[11px] text-on-surface-variant">{item.label}</span>
-                <span className="text-[15px] font-semibold text-on-surface">{item.value}</span>
+                <span className="text-xs text-on-surface-variant">{item.label}</span>
+                <span className="text-md font-semibold text-on-surface">{item.value}</span>
               </div>
             ))}
           </div>
@@ -240,8 +251,8 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
               { title: '收获', content: currentClub.benefits },
             ].map((section, i) => (
               <section key={i}>
-                <h3 className="text-[15px] font-bold mb-2 text-on-surface">{section.title}</h3>
-                <p className="text-[13px] text-on-surface-variant leading-relaxed">
+                <h3 className="text-md font-bold mb-2 text-on-surface">{section.title}</h3>
+                <p className="text-base text-on-surface-variant leading-relaxed">
                   {section.content}
                 </p>
               </section>
@@ -249,26 +260,26 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
           </div>
 
           <div className="mb-6 pb-2">
-            <h3 className="text-[15px] font-bold mb-4 text-on-surface">联系渠道</h3>
+            <h3 className="text-md font-bold mb-4 text-on-surface">联系渠道</h3>
             <div className="space-y-1">
               <div className="flex justify-between items-center py-4 border-b border-black/[0.03]">
-                 <span className="text-[13px] text-on-surface-variant">公众号</span>
+                 <span className="text-base text-on-surface-variant">公众号</span>
                  <div className="flex items-center gap-3">
-                   <span className="text-[14px] font-semibold text-on-surface">{currentClub.officialAccount}</span>
-                   <button className="px-4 py-1.5 bg-black/[0.05] text-on-surface text-[12px] font-bold rounded-full transition-colors">关注</button>
+                   <span className="text-base font-semibold text-on-surface">{currentClub.officialAccount}</span>
+                   <button className="px-4 py-1.5 bg-black/[0.05] text-on-surface text-sm font-bold rounded-full transition-colors">关注</button>
                  </div>
               </div>
               <div className="flex justify-between items-center py-4">
-                 <span className="text-[13px] text-on-surface-variant">招新群</span>
+                 <span className="text-base text-on-surface-variant">招新群</span>
                  <div className="flex items-center gap-3">
-                   <span className="text-[14px] font-semibold text-on-surface">{currentClub.groupNumber}</span>
-                   <button className="px-4 py-1.5 bg-black/[0.05] text-on-surface text-[12px] font-bold rounded-full transition-colors">加群</button>
+                   <span className="text-base font-semibold text-on-surface">{currentClub.groupNumber}</span>
+                   <button className="px-4 py-1.5 bg-black/[0.05] text-on-surface text-sm font-bold rounded-full transition-colors">加群</button>
                  </div>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 pt-2 pb-12">
+          <div className="flex flex-col gap-3 pt-2 pb-6">
               <button 
                 onClick={() => {
                   onSwipeRight(currentClub);
@@ -278,9 +289,9 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
                     container.scrollTo({ top: 0, behavior: 'instant' });
                   }
                 }}
-                className="w-full py-4 rounded-full bg-rose-500 text-white font-bold text-[14px] transition-colors hover:bg-rose-600 flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-full bg-rose-500 text-white font-bold text-base transition-colors hover:bg-rose-600 flex items-center justify-center gap-2"
               >
-                <Heart size={16} fill="currentColor" />
+                <Heart size={18} fill="currentColor" />
                 添加到兴趣清单
               </button>
               <button 
@@ -290,7 +301,7 @@ export const ClubSwiper: React.FC<Props> = ({ clubs, onSwipeLeft, onSwipeRight, 
                     container.scrollTo({ top: 0, behavior: 'smooth' });
                   }
                 }}
-                className="w-full py-4 rounded-full bg-surface-container text-on-surface font-semibold text-[13px] transition-colors hover:bg-surface-container-high"
+                className="w-full py-4 rounded-full bg-surface-container text-on-surface font-semibold text-base transition-colors hover:bg-surface-container-high"
               >
                 返回顶部
               </button>

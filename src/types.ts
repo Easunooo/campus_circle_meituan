@@ -2,6 +2,11 @@ export type { Club } from './constants';
 
 export type AppState = 'interests' | 'discovery' | 'intentions' | 'profile';
 
+export interface Interest {
+  name: string;
+  icon: string;
+}
+
 export interface UserProfile {
   name: string;
   avatar: string;
